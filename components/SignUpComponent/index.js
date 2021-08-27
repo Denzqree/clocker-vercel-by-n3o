@@ -89,7 +89,7 @@ export const SignUpComponent = (props) => {
 
       <FormControl id="username" p={4} isRequired>
         <InputGroup>
-          <InputLeftAddon children="n3o.pt/clocker/"/>
+          <InputLeftAddon>n3o.pt/clocker/</InputLeftAddon>
           <Input type="username" value={values.username} onChange={handleChange} onBlur={handleBlur}/>
         </InputGroup>
         {touched.username && <FormHelperText textColor="#e74c3c">{errors.username}</FormHelperText> }
