@@ -25,8 +25,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 
-export const firebaseClient = firebase.apps.length 
+const app = firebase.apps.length 
             ? firebase.app() 
             : firebase.initializeApp(firebaseConfig);
 
 export const persistenceMode = firebase.auth.Auth.Persistence.LOCAL;
+
+export default firebase;

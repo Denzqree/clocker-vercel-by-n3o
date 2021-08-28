@@ -17,7 +17,7 @@ import {
 
 import { LogoComponent } from '../LogoComponent';
 
-import { firebaseClient, persistenceMode } from '../../config/firebase';
+import firebaseClient, { persistenceMode } from '../../config/firebase/client';
 
 
 const validationSchema = yup.object().shape({

@@ -19,7 +19,7 @@ import {
 
 import { LogoComponent } from '../LogoComponent';
 
-import { firebaseClient } from '../../config/firebase';
+import firebaseClient from '../../config/firebase/client';
 
 const validationSchema = yup.object().shape({
   email: yup.string().email('Email inválido').required('Preenchimento obrigatório'),
