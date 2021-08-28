@@ -9,8 +9,6 @@ import {
   Text, 
 } from '@chakra-ui/react';
 
-import firebase from '../../config/firebase'
-
 export const AgendaComponent = () => {
     const logout = () => firebase.auth().signOut();
     return (
