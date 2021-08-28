@@ -17,7 +17,7 @@ import {
 
 import { LogoComponent } from '../LogoComponent';
 
-import firebase, { persistenceMode } from '../../config/firebase';
+import { firebaseClient, persistenceMode } from '../../config/firebase';
 
 
 const validationSchema = yup.object().shape({
@@ -42,7 +42,7 @@ export const LoginComponent = (props) => {
   }
 
   const signInOnSubmit = async (values, form) => {
-      firebase.auth().setPersistence(persistenceMode);
+      firebaseClient.auth().setPersistence(persistenceMode);
 
       try{
         const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password);

@@ -19,7 +19,7 @@ import {
 
 import { LogoComponent } from '../LogoComponent';
 
-import firebase from '../../config/firebase';
+import { firebaseClient } from '../../config/firebase';
 
 const validationSchema = yup.object().shape({
   email: yup.string().email('Email inválido').required('Preenchimento obrigatório'),
@@ -49,7 +49,7 @@ export const SignUpComponent = (props) => {
   } = useFormik({
     onSubmit: async (values, form) => {
       try{
-        const user = await firebase.auth().createUserWithEmailAndPassword(values.email, values.password);
+        const user = await firebaseClient.auth().createUserWithEmailAndPassword(values.email, values.password);
         console.log(user);
       } catch(err) {
         console.log(err);

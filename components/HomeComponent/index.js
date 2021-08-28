@@ -12,7 +12,7 @@ import {
     Text, 
   } from '@chakra-ui/react';
 
-import firebase from '../../config/firebase';
+import firebaseClient from '../../config/firebase';
 
 export const HomeComponent = (props) => {
 
@@ -54,7 +54,7 @@ export const HomeComponent = (props) => {
     };
 
     useEffect(() => {
-        const onLogin = firebase.auth().onAuthStateChanged(user => {
+        const onLogin = firebaseClient.auth().onAuthStateChanged(user => {
             console.log('user state changed');
                 setAuth({
                     loading: false,
