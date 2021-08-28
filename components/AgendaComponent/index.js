@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { LogoComponent } from "../";
 
 import { 
@@ -67,7 +65,6 @@ export const AgendaComponent = () => {
           </Box>
         </Box>
 
-        
 
         <Box p={4,2} textAlign="center">
             <Button onClick={logout}>Sair</Button>
