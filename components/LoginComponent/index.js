@@ -45,7 +45,7 @@ export const LoginComponent = (props) => {
       firebaseClient.auth().setPersistence(persistenceMode);
 
       try{
-        const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password);
+        const user = await firebaseClient.auth().signInWithEmailAndPassword(values.email, values.password);
         console.log(user);
       }catch(err){
         console.log(err);
