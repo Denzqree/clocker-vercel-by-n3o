@@ -47,7 +47,7 @@ export const AgendaComponent = () => {
           centerContent
         >
           <Box h="100" cursor="pointer">
-            <Box zIndex="0">
+            <Box zIndex="0" maxWidth="100%">
               <LogoComponent />
             </Box>
             <Box
@@ -62,7 +62,7 @@ export const AgendaComponent = () => {
         </Container>
 
         <Box mt={2} p={4} width="100%" borderWidth="1px" borderRadius="lg">
-          <Box p={4,2} mt={8} width="sm">
+          <Box p={4,2} mt={8} width="50">
             <Image src="static/images/develop.png" alt="Em construção" />
           </Box>
         </Box>
