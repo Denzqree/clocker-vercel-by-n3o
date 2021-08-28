@@ -1,0 +1,9 @@
+.toUnderline {
+    text-decoration:none;
+    cursor:default;
+}
+
+.toUnderline:hover {
+    text-decoration: underline;
+    cursor:pointer;
+}

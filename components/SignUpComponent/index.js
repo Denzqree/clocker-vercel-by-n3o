@@ -1,57 +1,62 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-import { useFormik } from 'formik';
+import { useFormik } from "formik";
 
-import * as yup from 'yup';
+import * as yup from "yup";
 
-import { 
+import {
   Container,
-  Box, 
-  Input, 
-  Button, 
-  Text, 
-  FormControl, 
-  FormLabel, 
+  Box,
+  Input,
+  Button,
+  Text,
+  FormControl,
+  FormLabel,
   FormHelperText,
   InputLeftAddon,
   InputGroup,
-} from '@chakra-ui/react';
+  Divider,
+} from "@chakra-ui/react";
 
-import { LogoComponent } from '../LogoComponent';
+import { LogoComponent } from "../LogoComponent";
 
-import firebaseClient from '../../config/firebase/client';
+import firebaseClient from "../../config/firebase/client";
 
 const validationSchema = yup.object().shape({
-  email: yup.string().email('Email inválido').required('Preenchimento obrigatório'),
-  password: yup.string().required('Preenchimento obrigatório'),
-  username: yup.string().required('Preenchimento obrigatório'), //Pode/deve se verificar se o usuario ja esta cadastrado
+  email: yup
+    .string()
+    .email("Email inválido")
+    .required("Preenchimento obrigatório"),
+  password: yup.string().required("Preenchimento obrigatório"),
+  username: yup.string().required("Preenchimento obrigatório"), //Pode/deve se verificar se o usuario ja esta cadastrado
 });
 
 export const SignUpComponent = (props) => {
-
   //Deprecated
   const goToLogin = () => {
-    props.setHomeChoice({login:true,signup:false});
-  }
+    props.setHomeChoice({ login: true, signup: false });
+  };
 
   const goToHome = () => {
-    props.setHomeChoice({login:false,signup:false});
-  }
+    props.setHomeChoice({ login: false, signup: false });
+  };
 
   const {
-    values, 
-    errors, 
-    touched, 
-    handleChange, 
-    handleBlur, 
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
     handleSubmit,
     isSubmitting,
   } = useFormik({
     onSubmit: async (values, form) => {
-      try{
-        const user = await firebaseClient.auth().createUserWithEmailAndPassword(values.email, values.password);
+      try {
+        const user = await firebaseClient
+          .auth()
+          .createUserWithEmailAndPassword(values.email, values.password);
         console.log(user);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       } finally {
         goToHome();
@@ -59,49 +64,118 @@ export const SignUpComponent = (props) => {
     },
     validationSchema,
     initialValues: {
-      email: '',
-      username: '',
-      password: '',
-    }
-  })
+      email: "",
+      username: "",
+      password: "",
+    },
+  });
   return (
-    <Container p={4} centerContent>
+    <Container width="100" height="100vh" centerContent>
+      <Container minWidth="20vh" marginY="auto" paddingX={4} paddingY={4} centerContent>
+        <Container
+          p={5}
+          width="100%"
+          borderWidth="1px"
+          borderRadius="lg"
+          textAlign="center"
+          centerContent
+        >
+          <Box h="100" cursor="pointer">
+            <Box zIndex="0">
+              <LogoComponent />
+            </Box>
+            <Box
+              height="100"
+              position="relative"
+              top="-100"
+              left="0"
+              onClick={() => window.location.reload()}
+            ></Box>
+          </Box>
+          <Text>Crie sua agenda compartilhada</Text>
+        </Container>
 
-      <Link href="./"><a><LogoComponent /></a></Link>
+        <Box mt={2} p={4} width="100%" borderWidth="1px" borderRadius="lg">
+          <FormControl id="email" isRequired>
+            <Box display="flex">
+            <FormLabel>Email</FormLabel> {touched.email && (
+              <FormHelperText mt={0.5} textColor="#e74c3c">
+                {errors.email}
+              </FormHelperText>
+            )}
+            </Box>
+            <Input
+              size="lg"
+              type="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </FormControl>
+          
+          <Divider mt={4}/>
 
-      <Box p={4} mt={8}>
-        <Text>Crie sua agenda compartilhada</Text>
+          <FormControl id="password" mt={2} minHeight={10} isRequired>
+            <Box display="flex">
+            <FormLabel>Senha</FormLabel>
+            {touched.password && (
+              <FormHelperText mt={0.5} textColor="#e74c3c">
+                {errors.password}
+              </FormHelperText>
+            )}
+            </Box>
+            <Input
+              size="lg"
+              type="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </FormControl>
+
+          <Divider mt={4}/>
+
+          <FormControl mt={2} id="username" minHeight={10} isRequired>
+            <Box minHeight="5" display="block">
+            {touched.username && (
+              <FormHelperText m="0" textColor="#e74c3c">
+                {errors.username}
+              </FormHelperText>
+            )}
+            </Box>
+            <InputGroup>
+              <InputLeftAddon>n3o.pt/clocker/</InputLeftAddon>
+              <Input
+                type="username"
+                value={values.username}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </InputGroup>
+          </FormControl>
+        </Box>
+
+        <Box p={4}>
+          <Button
+            width="100%"
+            onClick={handleSubmit}
+            colorScheme="blue"
+            isLoading={isSubmitting}
+          >
+            Cadastrar
+          </Button>
+        </Box>
+
+        <Box display="flex">
+          <Text>Já tem uma conta ?&nbsp;</Text>
+          <Text class="toUnderline" onClick={goToLogin} display="flex">
+            Entre.
+          </Text>
+        </Box>
+      </Container>
+      <Box minHeight="auto" p={4} textAlign="center">
+        <Text>Made by N3O - admin(at)n3o.pt </Text>
       </Box>
-
-      <Box p={4} width="100%" >
-        <FormControl id="email" isRequired>
-          <FormLabel>Email</FormLabel>
-          <Input size="lg" type="email" value={values.email} onChange={handleChange} onBlur={handleBlur} />
-          {touched.email && <FormHelperText textColor="#e74c3c">{errors.email}</FormHelperText> }
-        </FormControl>
-        
-        <FormControl id="password" isRequired>
-          <FormLabel>Senha</FormLabel>
-          <Input size="lg" type="password" value={values.password} onChange={handleChange} onBlur={handleBlur} />
-          {touched.password && <FormHelperText textColor="#e74c3c">{errors.password}</FormHelperText> }
-        </FormControl>
-      </Box>
-
-      <FormControl id="username" p={4} isRequired>
-        <InputGroup>
-          <InputLeftAddon>n3o.pt/clocker/</InputLeftAddon>
-          <Input type="username" value={values.username} onChange={handleChange} onBlur={handleBlur}/>
-        </InputGroup>
-        {touched.username && <FormHelperText textColor="#e74c3c">{errors.username}</FormHelperText> }
-      </FormControl>
-
-      <Box p={4}>
-        <Button width="100%" onClick={handleSubmit} colorScheme="blue" isLoading={isSubmitting}>Cadastrar</Button>
-      </Box>
-
-      
-
-      <a onClick={goToLogin}>Já tem uma conta ? Acesse.</a>
     </Container>
-  )
+  );
 };

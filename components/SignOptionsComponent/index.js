@@ -16,7 +16,7 @@ export const SignOptionsComponent = (props) => {
             
         <Container p={4} centerContent>
 
-        <Link href="./"><a><LogoComponent /></a></Link>
+        <Link href="/"><a><LogoComponent /></a></Link>
 
         <Box p={4} mt={8}>
         <Text>Crie sua agenda compartilhada</Text>
