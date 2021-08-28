@@ -96,7 +96,7 @@ export const SignUpComponent = (props) => {
       </FormControl>
 
       <Box p={4}>
-        <Button width="100%" onClick={handleSubmit} colorScheme="blue" isLoading={isSubmitting}>Entrar</Button>
+        <Button width="100%" onClick={handleSubmit} colorScheme="blue" isLoading={isSubmitting}>Cadastrar</Button>
       </Box>
 
       
