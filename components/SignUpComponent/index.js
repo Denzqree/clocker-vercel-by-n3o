@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 
 import * as yup from "yup";
 
+import axios from 'axios';
+
 import {
   Container,
   Box,
@@ -21,6 +23,7 @@ import {
 import { LogoComponent } from "../LogoComponent";
 
 import firebaseClient from "../../config/firebase/client";
+import { useAuth } from "../../providers";
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -32,6 +35,9 @@ const validationSchema = yup.object().shape({
 });
 
 export const SignUpComponent = (props) => {
+
+  const [, { signup }] = useAuth()
+
   //Deprecated
   const goToLogin = () => {
     props.setHomeChoice({ login: true, signup: false });
@@ -40,6 +46,11 @@ export const SignUpComponent = (props) => {
   const goToHome = () => {
     props.setHomeChoice({ login: false, signup: false });
   };
+
+  const sign = (values) => {
+    signup();
+    goToHome()
+  }
 
   const {
     values,
@@ -50,18 +61,8 @@ export const SignUpComponent = (props) => {
     handleSubmit,
     isSubmitting,
   } = useFormik({
-    onSubmit: async (values, form) => {
-      try {
-        const user = await firebaseClient
-          .auth()
-          .createUserWithEmailAndPassword(values.email, values.password);
-        console.log(user);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        goToHome();
-      }
-    },
+    onSubmit: async (values) => {
+      sign(values)},
     validationSchema,
     initialValues: {
       email: "",
@@ -144,7 +145,7 @@ export const SignUpComponent = (props) => {
             )}
             </Box>
             <InputGroup>
-              <InputLeftAddon>n3o.pt/clocker/</InputLeftAddon>
+              <InputLeftAddon>clocker.n3o.pt/</InputLeftAddon>
               <Input
                 type="username"
                 value={values.username}
@@ -168,12 +169,12 @@ export const SignUpComponent = (props) => {
 
         <Box display="flex">
           <Text>Já tem uma conta ?&nbsp;</Text>
-          <Text class="toUnderline" onClick={goToLogin} display="flex">
+          <Text className="toUnderline" onClick={goToLogin} display="flex">
             Entre.
           </Text>
         </Box>
       </Container>
-      <Box minHeight="auto" p={4} textAlign="center">
+      <Box minHeight="auto" p={4} textAlign="center"  minWidth="320px">
         <Text>Made by N3O - admin(at)n3o.pt </Text>
       </Box>
     </Container>

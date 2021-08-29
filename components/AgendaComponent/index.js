@@ -6,27 +6,19 @@ import {
   Button, 
   Text,
   Image,
-  Badge,
-  Icon,
-  Flex,
-  Spacer,
 } from '@chakra-ui/react';
 
-import firebaseClient from '../../config/firebase/client';
-
-const property = {
-  imageUrl: "https://bit.ly/2Z4KKcF",
-  imageAlt: "Rear view of modern home with pool",
-  beds: 3,
-  baths: 2,
-  title: "Modern home in city center in the heart of historic Los Angeles",
-  formattedPrice: "$1,900.00",
-  reviewCount: 34,
-  rating: 4,
-}
+import { useAuth } from '../../providers';
 
 export const AgendaComponent = () => {
-    const logout = () => firebaseClient.auth().signOut();
+
+  const [auth, { logout }] = useAuth();
+
+  const logUserOut = () => {
+    logout()
+    return () => window.location.reload()
+  } 
+
     return (
       <Container width="100" height="100vh" centerContent>
       <Container
@@ -67,7 +59,7 @@ export const AgendaComponent = () => {
 
 
         <Box p={4,2} textAlign="center">
-            <Button onClick={logout}>Sair</Button>
+            <Button onClick={logUserOut()}>Sair</Button>
           </Box>
         </Container>
         <Box minHeight="6vh" p={4} textAlign="center">

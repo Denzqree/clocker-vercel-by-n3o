@@ -1,6 +1,6 @@
-import { useFormik } from "formik";
+import { useFormik } from 'formik';
 
-import * as yup from "yup";
+import * as yup from 'yup';
 
 import {
   Container,
@@ -12,11 +12,11 @@ import {
   FormLabel,
   FormHelperText,
   Divider,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import { LogoComponent } from "../LogoComponent";
+import { LogoComponent } from '../LogoComponent';
 
-import firebaseClient, { persistenceMode } from "../../config/firebase/client";
+import { useAuth } from './../../providers'
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -27,32 +27,23 @@ const validationSchema = yup.object().shape({
 });
 
 export const LoginComponent = (props) => {
+
+  const [, { login}] = useAuth();
+
   const goToSignup = () => {
     props.setHomeChoice({ login: false, signup: true });
   };
 
   const goToHome = (user) => {
     props.setHomeChoice({ login: false, signup: false });
-    props.setAuth({ loading: true });
   };
 
-  const onAuthSubmit = (values, form) => {
-    signInOnSubmit(values, form);
+  const onAuthSubmit = (values) => {
+    console.log(login);
     goToHome();
+    login(values);
   };
 
-  const signInOnSubmit = async (values, form) => {
-    firebaseClient.auth().setPersistence(persistenceMode);
-
-    try {
-      const user = await firebaseClient
-        .auth()
-        .signInWithEmailAndPassword(values.email, values.password);
-      console.log(user);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const {
     values,
@@ -63,7 +54,7 @@ export const LoginComponent = (props) => {
     handleSubmit,
     isSubmitting,
   } = useFormik({
-    onSubmit: (values, form) => onAuthSubmit(values, form),
+    onSubmit: (values) => onAuthSubmit(values),
     validationSchema,
     initialValues: {
       email: "",
@@ -73,7 +64,7 @@ export const LoginComponent = (props) => {
   return (
     <Container width="100" height="100vh" centerContent>
       <Container
-        minWidth="20vh"
+        minWidth="320px"
         marginY="auto"
         paddingX={4}
         paddingY={4}
@@ -155,13 +146,13 @@ export const LoginComponent = (props) => {
 
         <Box display="flex">
           <Text>Ainda não tem uma conta ?&nbsp;</Text>
-          <Text class="toUnderline" onClick={goToSignup} display="flex">
+          <Text className="toUnderline" onClick={goToSignup} display="flex">
             Cadastre-se.
           </Text>
         </Box>
       </Container>
 
-      <Box minHeight="auto" p={4} textAlign="center">
+      <Box minHeight="auto" p={4} textAlign="center" minWidth="320px">
         <Text>Made by N3O - admin(at)n3o.pt </Text>
       </Box>
     </Container>

@@ -17,6 +17,6 @@ const app = firebase.apps.length
                     client_id: process.env.FIREBASE_SERVER_CLIENT_ID,
                     client_cert: process.env.FIREBASE_SERVER_CLIENT_CERT
                 })
-            });
+            })
 
 export default admin
