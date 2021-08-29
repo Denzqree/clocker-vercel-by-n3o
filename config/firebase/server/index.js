@@ -1,11 +1,10 @@
-import admin from 'firebase-admin';
-import firebase from 'firebase/app';
+import firebaseServer from 'firebase-admin';
 import 'firebase/auth';
 
-const app = firebase.apps.length 
-            ? firebase.app() 
-            : firebase.initializeApp({
-                credential: admin.credential.cert({
+const app = firebaseServer.apps.length 
+            ? firebaseServer.app() 
+            : firebaseServer.initializeApp({
+                credential: firebaseServer.credential.cert({
                     type: "service_account",
                     auth_uri: "https://accounts.google.com/o/oauth2/auth",
                     token_uri: "https://oauth2.googleapis.com/token",
@@ -19,4 +18,4 @@ const app = firebase.apps.length
                 })
             })
 
-export default admin
+export default firebaseServer

@@ -1,13 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect } from "react";
 
-import router from 'next/router'
-import Link from "next/link"
+import router from "next/router";
+import Link from "next/link";
 
-import { useFormik } from "formik"
+import { useFormik } from "formik";
 
-import * as yup from "yup"
+import * as yup from "yup";
 
-import axios from "axios"
+import axios from "axios";
 
 import {
   Container,
@@ -36,13 +36,12 @@ const validationSchema = yup.object().shape({
 });
 
 export default function Register() {
-
   const [auth, { signup }] = useAuth();
 
   useEffect(() => {
-    console.log('useEffect signup : '+auth.user.value)
-    auth.user && router.push('/agenda')
-  },[auth.user])
+    console.log("useEffect signup : " + auth.user.value);
+    auth.user && router.push("/agenda");
+  }, [auth.user]);
 
   /*Deprecated
   const goToLogin = () => {
@@ -54,8 +53,8 @@ export default function Register() {
   };
   */
 
-  const signSubmit = ({email, password}) => {
-    signup({email, password});
+  const signSubmit = ({ email, password, username}) => {
+    signup({ email, password, username});
   };
 
   const {
@@ -103,7 +102,7 @@ export default function Register() {
               position="relative"
               top="-100"
               left="0"
-              onClick={event =>  window.location.href='/login'}
+              onClick={(event) => (window.location.href = "/login")}
             ></Box>
           </Box>
           <Text>Crie sua agenda compartilhada</Text>
@@ -182,7 +181,7 @@ export default function Register() {
         <Box p={4}>
           <Button
             width="100%"
-            minWidth="100px"
+            minWidth="125px"
             onClick={handleSubmit}
             colorScheme="blue"
             isLoading={isSubmitting}

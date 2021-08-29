@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import router from 'next/router'
+import router from "next/router";
 import Link from "next/link";
 
 import { useFormik } from "formik";
@@ -34,10 +34,10 @@ export default function Login() {
   const [auth, { login }] = useAuth();
 
   useEffect(() => {
-    console.log('useEffect login : ')
-    console.log(auth)
-    auth.user && router.push('/agenda')
-},[auth.user])
+    console.log("useEffect login : ");
+    console.log(auth);
+    auth.user && router.push("/agenda");
+  }, [auth.user]);
 
   const authSubmit = (values) => {
     console.log(login);
@@ -87,7 +87,7 @@ export default function Login() {
               position="relative"
               top="-100"
               left="0"
-              onClick={event =>  window.location.href='/'}
+              onClick={(event) => (window.location.href = "/")}
             ></Box>
           </Box>
           <Text>Crie sua agenda compartilhada</Text>
@@ -143,7 +143,12 @@ export default function Login() {
         </Box>
 
         <Box p={4}>
-          <Button width="100%" minWidth="100px" onClick={handleSubmit} isLoading={isSubmitting}>
+          <Button
+            width="100%"
+            minWidth="125px"
+            onClick={handleSubmit}
+            isLoading={isSubmitting}
+          >
             Entrar
           </Button>
         </Box>
