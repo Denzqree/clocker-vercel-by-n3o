@@ -1,4 +1,5 @@
-import { LogoComponent } from "../";
+import router from 'next/router'
+import { useEffect } from 'react';
 
 import { 
   Container, 
@@ -8,18 +9,26 @@ import {
   Image,
 } from '@chakra-ui/react';
 
-import { useAuth } from '../../providers';
+import { useAuth } from '../providers';
 
-export const AgendaComponent = () => {
+import { LogoComponent } from "../components";
+
+export default function Agenda() {
 
   const [auth, { logout }] = useAuth();
 
   const logUserOut = () => {
-    logout()
-    return () => window.location.reload()
+      logout()
+      router.push('/')  
   } 
 
-    return (
+  useEffect(() => {
+    console.log('useEffect agenda : ')
+    console.log(auth)
+      !auth.user && router.push('/')
+  },[auth.user])
+
+    return auth.user && (
       <Container width="100" height="100vh" centerContent>
       <Container
         minWidth="20vh"
@@ -45,7 +54,7 @@ export const AgendaComponent = () => {
               position="relative"
               top="-100"
               left="0"
-              onClick={() => window.location.reload()}
+              onClick={events => window.location.href("/")}
             ></Box>
           </Box>
           <Text>Crie sua agenda compartilhada</Text>
@@ -59,7 +68,7 @@ export const AgendaComponent = () => {
 
 
         <Box p={4,2} textAlign="center">
-            <Button onClick={logUserOut()}>Sair</Button>
+            <Button onClick={logUserOut}>Sair</Button>
           </Box>
         </Container>
         <Box minHeight="6vh" p={4} textAlign="center">
