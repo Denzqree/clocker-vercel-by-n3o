@@ -6,7 +6,7 @@ export const AppLogin = ({ children }) => {
           minWidth="320px"
           width="35vw"
           paddingTop="15vh"
-          paddingX="{5}"
+          paddingX={5}    
         >
             { children }
         </Box>
