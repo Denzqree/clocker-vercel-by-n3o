@@ -6,7 +6,7 @@ import { Spinner } from "@chakra-ui/react"
 
 import { useAuth } from "../modules/providers"
 
-import { AppLogin } from "../modules/components"
+import { AppLogin } from "../modules/wrappers"
 
 
 export default function Home() {
