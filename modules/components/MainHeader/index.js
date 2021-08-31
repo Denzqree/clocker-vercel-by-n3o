@@ -1,6 +1,6 @@
 import router from "next/router";
 
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 
 import { Logo } from "../";
 
@@ -32,7 +32,7 @@ export const MainHeader = ({ children, logout }) => {
         backgroundColor="#4E84D4"
         onClick={onLogout}
       >
-        Sair
+        <Text decoration="underline">Sair</Text>
       </Button>
     </Box>
   );
