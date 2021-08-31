@@ -1,5 +1,5 @@
 import router from 'next/router'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react'
 
 import { 
   Container, 
@@ -7,14 +7,27 @@ import {
   Button, 
   Text,
   Image,
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
-import { useAuth } from '../providers';
+import { useAuth } from '../providers'
+import { LogoComponent } from "../components"
+import axios from 'axios'
 
-import { LogoComponent } from "../components";
-
+const getAgenda = ({ token, when = new Date() }) => axios({
+  meethod:: 'get',
+  url:'/api/agenda',
+  params: {
+    when: '2021-02-01'
+  },
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+)
 export default function Agenda() {
-  const [auth, { logout }] = useAuth();
+  const router = useRouter()
+  const [auth, { logout }] = useAuth()
+  const [when, setWhen] = useState(() => new Date())
+  //const [data, { loading, status, error}, fetch] = useFetch(() => getAgenda(when))
 
   const logUserOut = () => {
       logout()
