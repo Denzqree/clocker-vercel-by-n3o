@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect } from "react"
 
-import router from "next/router";
+import router from "next/router"
 
-import { Spinner } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react"
 
-import { useAuth } from "../modules/providers";
+import { useAuth } from "../modules/providers"
+
+import { AppLogin } from "../modules/components"
 
 
 export default function Home() {
@@ -21,6 +23,8 @@ export default function Home() {
   }, [auth]);
 
   return (
+    <AppLogin>
         <Spinner />
+    </AppLogin>
   );
 }
