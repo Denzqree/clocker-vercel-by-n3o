@@ -1,18 +1,13 @@
-import { Box } from '@chakra-ui/react'
+import { Box } from "@chakra-ui/react";
 
-import { CentererBox } from "../CentererBox"
+import { CentererBox } from "../CentererBox";
 
 export const MainApp = ({ children }) => {
-    return (
-        <CentererBox>
-        <Box
-          minWidth="320px"
-          width="780px"
-          marginY="auto"
-          paddingX="0"
-        >
-            { children }
-        </Box>
-        </CentererBox>
-    )
-}
+  return (
+    <CentererBox>
+      <Box minWidth="320px" width="640px">
+        {children}
+      </Box>
+    </CentererBox>
+  );
+};

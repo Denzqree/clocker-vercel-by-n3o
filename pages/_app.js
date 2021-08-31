@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
           <AppBox>
               <Component {...pageProps} />
           </AppBox>
-          <Footer>Made by N3O - admin(at)n3o.pt</Footer>
+          <Footer>Made by N3O - admin(at)n3o.pt<br />https://github.com/Denzqree/clocker-vercel-by-n3o</Footer>
         </AuthProvider>
     </ChakraProvider>
   )

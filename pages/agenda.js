@@ -60,7 +60,7 @@ export default function Agenda() {
       <Box>
         <MainApp>
           <MainHeader logout={logout}>clocker.n3o.pt</MainHeader>
-          <Box paddingX={5}>
+          <Box paddingX={8}>
             <Box
               marginTop={2}
               padding={4}
