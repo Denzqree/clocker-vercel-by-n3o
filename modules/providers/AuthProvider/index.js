@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState, useContext } from 'react';
 
-import firebaseClient, { persistenceMode } from './../../config/firebase/client/';
+import firebaseClient, { persistenceMode } from './../../../config/firebase/client/';
 
 const AuthContext = React.createContext([{}, () => {}]);
 

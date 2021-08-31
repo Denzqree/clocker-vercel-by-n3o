@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { useFormik } from "formik";
@@ -23,8 +23,12 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
-import { LogoComponent } from "../components";
-import { useAuth } from "../providers";
+import { useAuth } from "../modules/providers";
+
+import {
+  LoginHeader,
+} from "../modules/components";
+import { AppLogin } from "../modules/wrappers"
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -36,6 +40,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default function Register() {
+  const router = useRouter()
   const [auth, { signup }] = useAuth();
 
   useEffect(() => {
@@ -67,36 +72,10 @@ export default function Register() {
     },
   });
   return (
-    <Container width="100" height="100vh" centerContent>
-      <Container
-        minWidth="20vh"
-        marginY="auto"
-        paddingX={4}
-        paddingY={4}
-        centerContent
-      >
-        <Container
-          p={5}
-          width="100%"
-          borderWidth="1px"
-          borderRadius="lg"
-          textAlign="center"
-          centerContent
-        >
-          <Box h="100" cursor="pointer">
-            <Box zIndex="0">
-              <LogoComponent size="auto"/>
-            </Box>
-            <Box
-              height="100"
-              position="relative"
-              top="-100"
-              left="0"
-              onClick={(event) => (window.location.href = "/login")}
-            ></Box>
-          </Box>
-          <Text>Crie sua agenda compartilhada</Text>
-        </Container>
+
+    <AppLogin>
+
+    <LoginHeader/>
 
         <Box mt={2} p={4} width="100%" borderWidth="1px" borderRadius="lg">
           <FormControl id="email" isRequired>
@@ -179,10 +158,7 @@ export default function Register() {
             Cadastrar
           </Button>
         </Box>
-      </Container>
-      <Box minHeight="auto" p={4} textAlign="center" minWidth="320px">
-        <Text>Made by N3O - admin(at)n3o.pt </Text>
-      </Box>
-    </Container>
+
+      </AppLogin>
   );
 }

@@ -1,9 +1,11 @@
+import { useEffect } from "react";
+
 import router from "next/router";
 
-import { useAuth } from "../providers";
+import { Spinner } from "@chakra-ui/react";
 
-import { Container, Spinner } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useAuth } from "../modules/providers";
+
 
 export default function Home() {
   const [auth] = useAuth();
@@ -19,16 +21,6 @@ export default function Home() {
   }, [auth]);
 
   return (
-    <Container width="100" height="100vh" centerContent>
-      <Container
-        minWidth="20vh"
-        marginY="auto"
-        paddingX={4}
-        paddingY={4}
-        centerContent
-      >
         <Spinner />
-      </Container>
-    </Container>
   );
 }

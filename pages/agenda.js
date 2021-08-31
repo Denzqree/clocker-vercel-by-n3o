@@ -1,94 +1,53 @@
-import router from 'next/router'
-import { useEffect, useState } from 'react'
+import React from "react";
 
-import { 
-  Container, 
-  Box, 
-  Button, 
-  Text,
-  Image,
-} from '@chakra-ui/react'
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-import { useAuth } from '../providers'
-import { LogoComponent } from "../components"
-import axios from 'axios'
+import { Box, Image } from "@chakra-ui/react";
 
-const getAgenda = ({ token, when = new Date() }) => axios({
-  meethod:: 'get',
-  url:'/api/agenda',
-  params: {
-    when: '2021-02-01'
-  },
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-)
+import { useAuth } from "../modules/providers";
+
+import { AppMain } from "../modules/wrappers";
+
+import { MainHeader } from "../modules/components";
+
+import axios from "axios";
+
+const getAgenda = ({ token, when = new Date() }) =>
+  axios({
+    method: "get",
+    url: "/api/agenda",
+    params: {
+      when: "2021-02-01",
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 export default function Agenda() {
-  const router = useRouter()
-  const [auth, { logout }] = useAuth()
-  const [when, setWhen] = useState(() => new Date())
+  const router = useRouter();
+  const [auth, { logout }] = useAuth();
+  const [when, setWhen] = useState(() => new Date());
   //const [data, { loading, status, error}, fetch] = useFetch(() => getAgenda(when))
 
-  const logUserOut = () => {
-      logout()
-      router.push('/')  
-  } 
-
   useEffect(() => {
-    console.log('useEffect agenda : ')
-    console.log(auth)
-      !auth.user && router.push('/')
-  },[auth.user])
+    console.log("useEffect agenda : ");
+    console.log(auth);
+    !auth.user && router.push("/");
+  }, [auth.user]);
 
-    return auth.user && (
-      <Container width="100" height="100vh" centerContent>
-      <Container
-        minWidth="20vh"
-        marginY="auto"
-        paddingX={4}
-        paddingY={4}
-        centerContent
-      >
-        <Container
-          p={5}
-          width="100%"
-          borderWidth="1px"
-          borderRadius="lg"
-          textAlign="center"
-          centerContent
-        >
-          <Box h="100" cursor="pointer">
-            <Box zIndex="0" maxWidth="100%">
-              <LogoComponent size="auto"/>
+  return (
+    auth.user && (
+      <React.Fragment>
+        <MainHeader logout={logout}></MainHeader>
+        <AppMain>
+          <Box mt={2} p={4} width="100%" borderWidth="1px" borderRadius="lg">
+            <Box p={(4, 2)} mt={8} width="50">
+              <Image src="static/images/develop.png" alt="Em construção" />
             </Box>
-            <Box
-              height="100"
-              position="relative"
-              top="-100"
-              left="0"
-              onClick={events => window.location.href("/")}
-            ></Box>
           </Box>
-          <Text>Crie sua agenda compartilhada</Text>
-        </Container>
-
-        <Box mt={2} p={4} width="100%" borderWidth="1px" borderRadius="lg">
-          <Box p={4,2} mt={8} width="50">
-            <Image src="static/images/develop.png" alt="Em construção" />
-          </Box>
-        </Box>
-
-
-        <Box p={4,2} textAlign="center">
-            <Button onClick={logUserOut}>Sair</Button>
-          </Box>
-        </Container>
-        <Box minHeight="6vh" p={4} textAlign="center">
-
-          <Text>Made by N3O - admin(at)n3o.pt </Text>
-
-        </Box>
-      </Container>
-
+        </AppMain>
+      </React.Fragment>
     )
+  );
 }
