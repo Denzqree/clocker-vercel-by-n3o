@@ -6,7 +6,7 @@ import { Spinner } from "@chakra-ui/react"
 
 import { useAuth } from "../modules/providers"
 
-import { AppLogin } from "../modules/wrappers"
+import { AppCentering } from "../modules/wrappers"
 
 
 export default function Home() {
@@ -23,8 +23,8 @@ export default function Home() {
   }, [auth]);
 
   return (
-    <AppLogin>
+    <AppCentering>
         <Spinner />
-    </AppLogin>
+    </AppCentering>
   );
 }
