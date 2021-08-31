@@ -1,36 +1,40 @@
-import React from "react";
+import React from "react"
+import { useEffect, useState } from "react"
 
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router"
+
+import axios from "axios"
 
 import { useFetch } from "@refetty/react"
 
-import { IconButton, Box } from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { addDays, subDays } from "date-fns";
+import { IconButton, Box } from "@chakra-ui/react"
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
+import { addDays, subDays } from "date-fns"
 
+import { getToken } from "../config/firebase/client"
 
-import { formatDate } from "../modules/components";
+import { formatDate } from "../modules/components"
 
-import { useAuth } from "../modules/providers";
+import { useAuth } from "../modules/providers"
 
-import { MainApp } from "../modules/wrappers";
+import { MainApp } from "../modules/wrappers"
 
-import { MainHeader } from "../modules/components";
+import { MainHeader } from "../modules/components"
 
-import axios from "axios";
-//{ token, when = new Date() }
-const getAgenda = (when) =>
+const getAgenda = async (when) => {
+  const token = await getToken()
   axios({
     method: "get",
     url: "/api/agenda",
     params: {
       when,
     },
-    /* headers: {
+    headers: {
       Authorization: `Bearer ${token}`,
-    }, */
-  });
+    },
+  })
+}
+
 export default function Agenda() {
   const router = useRouter();
   const [auth, { logout }] = useAuth();
@@ -41,8 +45,6 @@ export default function Agenda() {
 
   const addDay = () =>  setWhen(prevState => addDays(when, 1))
 
-  
-
   useEffect(() => {
       fetch(when)
   },[when])
@@ -51,7 +53,7 @@ export default function Agenda() {
     console.log("useEffect agenda : ");
     console.log(auth);
     !auth.user && router.push("/");
-  }, [auth.user]);
+  }, [auth.user])
 
   return (
     auth.user && (
@@ -103,5 +105,6 @@ export default function Agenda() {
         </MainApp>
       </Box>
     )
-  );
+  )
+  
 }
