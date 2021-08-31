@@ -43,16 +43,6 @@ export default function Register() {
     auth.user && router.push("/agenda");
   }, [auth.user]);
 
-  /*Deprecated
-  const goToLogin = () => {
-    props.setHomeChoice({ login: true, signup: false });
-  };
-
-  const goToHome = () => {
-    props.setHomeChoice({ login: false, signup: false });
-  };
-  */
-
   const signSubmit = ({ email, password, username}) => {
     signup({ email, password, username});
   };
@@ -95,7 +85,7 @@ export default function Register() {
         >
           <Box h="100" cursor="pointer">
             <Box zIndex="0">
-              <LogoComponent />
+              <LogoComponent size="auto"/>
             </Box>
             <Box
               height="100"

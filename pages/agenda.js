@@ -59,7 +59,7 @@ export default function Agenda() {
         >
           <Box h="100" cursor="pointer">
             <Box zIndex="0" maxWidth="100%">
-              <LogoComponent />
+              <LogoComponent size="auto"/>
             </Box>
             <Box
               height="100"

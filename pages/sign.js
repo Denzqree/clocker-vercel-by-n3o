@@ -24,7 +24,7 @@ export default function SignOptions() {
           >
             <Box h="100" cursor="pointer">
               <Box zIndex="0">
-                <LogoComponent />
+                <LogoComponent size="auto"/>
               </Box>
               <Box
                 height="100"
