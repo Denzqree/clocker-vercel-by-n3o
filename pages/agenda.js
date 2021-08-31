@@ -3,32 +3,49 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { Box, Image } from "@chakra-ui/react";
+import { useFetch } from "@refetty/react"
+
+import { IconButton, Box } from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { addDays, subDays } from "date-fns";
+
+
+import { formatDate } from "../modules/components";
 
 import { useAuth } from "../modules/providers";
 
-import { AppMain } from "../modules/wrappers";
+import { MainApp } from "../modules/wrappers";
 
 import { MainHeader } from "../modules/components";
 
 import axios from "axios";
-
-const getAgenda = ({ token, when = new Date() }) =>
+//{ token, when = new Date() }
+const getAgenda = (when) =>
   axios({
     method: "get",
     url: "/api/agenda",
     params: {
-      when: "2021-02-01",
+      when,
     },
-    headers: {
+    /* headers: {
       Authorization: `Bearer ${token}`,
-    },
+    }, */
   });
 export default function Agenda() {
   const router = useRouter();
   const [auth, { logout }] = useAuth();
   const [when, setWhen] = useState(() => new Date());
-  //const [data, { loading, status, error}, fetch] = useFetch(() => getAgenda(when))
+  const [data, { loading, status, error }, fetch] = useFetch(getAgenda, { lazy: true })
+
+  const removeDay = () => setWhen(prevState => subDays(when, 1))
+
+  const addDay = () =>  setWhen(prevState => addDays(when, 1))
+
+  
+
+  useEffect(() => {
+      fetch(when)
+  },[when])
 
   useEffect(() => {
     console.log("useEffect agenda : ");
@@ -38,16 +55,53 @@ export default function Agenda() {
 
   return (
     auth.user && (
-      <React.Fragment>
-        <MainHeader logout={logout}></MainHeader>
-        <AppMain>
-          <Box mt={2} p={4} width="100%" borderWidth="1px" borderRadius="lg">
-            <Box p={(4, 2)} mt={8} width="50">
-              <Image src="static/images/develop.png" alt="Em construção" />
+      <Box>
+        <MainApp>
+          <MainHeader logout={logout}>clocker.n3o.pt</MainHeader>
+          <Box paddingX={5}>
+            <Box
+              marginTop={2}
+              padding={4}
+              width="100%"
+              borderWidth="1px"
+              borderRadius="lg"
+            >
+              <Box>
+                <Box display="flex" justifyContent="space-around" alignItems="center">
+                  <IconButton
+                    aria-label="Go to the previous day of the agenda"
+                    icon={<ChevronLeftIcon />}
+                    background="transparent"
+                    isRound="true"
+                    boxSize="30px"
+                    onClick={removeDay}
+                  />
+                  <Box text-align="center">
+                    {formatDate(when, "PPPP").toLocaleUpperCase()}
+                  </Box>
+                  <IconButton
+                    aria-label="Go to the next day of the agenda"
+                    icon={<ChevronRightIcon />}
+                    background="transparent"
+                    isRound="true"
+                    boxSize="30px"
+                    onClick={addDay}
+                  />
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              marginTop={2}
+              padding={4}
+              width="100%"
+              borderWidth="1px"
+              borderRadius="lg"
+            >
+              test
             </Box>
           </Box>
-        </AppMain>
-      </React.Fragment>
+        </MainApp>
+      </Box>
     )
   );
 }

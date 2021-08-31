@@ -3,3 +3,5 @@ export * from './LoginHeader'
 export * from './MainHeader'
 
 export * from '../wrappers/Footer'
+
+export * from './Date'

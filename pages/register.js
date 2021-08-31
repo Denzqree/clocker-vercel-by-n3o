@@ -25,10 +25,8 @@ import {
 
 import { useAuth } from "../modules/providers";
 
-import {
-  LoginHeader,
-} from "../modules/components";
-import { AppLogin } from "../modules/wrappers"
+import { LoginHeader } from "../modules/components";
+import { CentererBox, LoginApp } from "../modules/wrappers";
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -40,7 +38,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default function Register() {
-  const router = useRouter()
+  const router = useRouter();
   const [auth, { signup }] = useAuth();
 
   useEffect(() => {
@@ -48,8 +46,8 @@ export default function Register() {
     auth.user && router.push("/agenda");
   }, [auth.user]);
 
-  const signSubmit = ({ email, password, username}) => {
-    signup({ email, password, username});
+  const signSubmit = ({ email, password, username }) => {
+    signup({ email, password, username });
   };
 
   const {
@@ -72,10 +70,9 @@ export default function Register() {
     },
   });
   return (
-
-    <AppLogin>
-
-    <LoginHeader/>
+    <CentererBox>
+      <LoginApp>
+        <LoginHeader />
 
         <Box mt={2} p={4} width="100%" borderWidth="1px" borderRadius="lg">
           <FormControl id="email" isRequired>
@@ -158,7 +155,7 @@ export default function Register() {
             Cadastrar
           </Button>
         </Box>
-
-      </AppLogin>
+      </LoginApp>
+    </CentererBox>
   );
 }

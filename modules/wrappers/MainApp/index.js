@@ -1,7 +1,10 @@
 import { Box } from '@chakra-ui/react'
 
-export const AppMain = ({ children }) => {
+import { CentererBox } from "../CentererBox"
+
+export const MainApp = ({ children }) => {
     return (
+        <CentererBox>
         <Box
           minWidth="320px"
           width="780px"
@@ -10,5 +13,6 @@ export const AppMain = ({ children }) => {
         >
             { children }
         </Box>
+        </CentererBox>
     )
 }

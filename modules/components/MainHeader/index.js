@@ -1,6 +1,6 @@
 import router from 'next/router'
 
-import { Container, Button } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 
 import { Logo } from '../'
 
@@ -12,9 +12,9 @@ export const MainHeader = ({ children, logout }) => {
     }
 
     return (
-        <Container backgroundColor="black" display="flex" justifyContent="space-between" alignItems="center" width="100vw">
-            <Logo size="200px"/>{ children } 
-            <Button onClick={onLogout}>Sair</Button>
-        </Container>
+        <Box backgroundColor="#f7f7f7" padding={2} borderWidth="1px" borderBottomRadius="lg" display="flex" justifyContent="space-between" alignItems="center" minWidth="320px" width="100%">
+            <Logo size="150px"/>{ children } 
+            <Button borderWidth="1px" borderColor="grey" textColor="black" backgroundColor="#f7f7f7" onClick={onLogout}>Sair</Button>
+        </Box>
     )
 }

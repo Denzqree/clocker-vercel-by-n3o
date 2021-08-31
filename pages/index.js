@@ -1,13 +1,12 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 
-import router from "next/router"
+import router from "next/router";
 
-import { Spinner } from "@chakra-ui/react"
+import { Spinner } from "@chakra-ui/react";
 
-import { useAuth } from "../modules/providers"
+import { useAuth } from "../modules/providers";
 
-import { AppCentering } from "../modules/wrappers"
-
+import { CentererBox } from "../modules/wrappers";
 
 export default function Home() {
   const [auth] = useAuth();
@@ -23,8 +22,8 @@ export default function Home() {
   }, [auth]);
 
   return (
-    <AppCentering>
-        <Spinner />
-    </AppCentering>
+    <CentererBox>
+      <Spinner />
+    </CentererBox>
   );
 }
