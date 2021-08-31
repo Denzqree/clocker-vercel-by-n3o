@@ -14,7 +14,6 @@ import { useAuth } from '../providers';
 import { LogoComponent } from "../components";
 
 export default function Agenda() {
-
   const [auth, { logout }] = useAuth();
 
   const logUserOut = () => {
