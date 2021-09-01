@@ -16,11 +16,16 @@ a {
 }
 
 .app {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  min-height: 100vh;
+  display:flex;
+  flex-direction:column;
 }
 
-.centererBox{
-  height:calc(100vh - 65px);
+.centererBox{ 
+  height:100%;
+}
+
+.footer {
+  flex: 0 0 65px;
+  margin-top: auto;
 }
