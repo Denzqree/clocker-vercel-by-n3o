@@ -33,6 +33,7 @@ const setSchedule = async (req, res) => {
   const doc = await agenda.doc(`${userId}@${req.query.when}`).get()
 
   if(doc.exists) {
+    
     return res.status(400)
   }
 
