@@ -1,0 +1,28 @@
+.scroll {
+ width:auto;
+ max-width:640px;
+ height: 30px;	
+ overflow: hidden;
+ position: relative;
+ line-height:175%;
+}
+.scroll p {
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ margin: 0;
+ text-align: center;
+ /* Starting position */
+ transform:translateX(100%);
+ /* Apply animation to this element */
+ animation: scroll-left 15s linear infinite;
+}
+/* Move it (define the animation) */
+@keyframes scroll-left {
+ 0%   {
+ transform: translateX(100%); 		
+ }
+ 100% {
+ transform: translateX(-100%); 
+ }
+}

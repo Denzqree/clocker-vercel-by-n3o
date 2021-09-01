@@ -8,6 +8,7 @@ import { Footer } from "../modules/wrappers"
 
 import '../styles/globals.css';
 import '../styles/text.css';
+import '../styles/textscroll.css';
 
 function MyApp({ Component, pageProps }) {
   return (

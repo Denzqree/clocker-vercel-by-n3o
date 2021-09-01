@@ -7,7 +7,7 @@ import axios from "axios"
 
 import { useFetch } from "@refetty/react"
 
-import { IconButton, Box } from "@chakra-ui/react"
+import { IconButton, Box, Link } from "@chakra-ui/react"
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import { addDays, subDays } from "date-fns"
 
@@ -59,9 +59,10 @@ export default function Agenda() {
     auth.user && (
       <Box>
         <MainApp>
-          <MainHeader logout={logout}>clocker.n3o.pt</MainHeader>
+          <MainHeader logout={logout}>Visita o site da <Link href="https://www.codar.me">Codar.me</Link></MainHeader>
           <Box paddingX={8}>
             <Box
+              backgroundColor="#f7f7f7"
               marginTop={2}
               padding={4}
               width="100%"
