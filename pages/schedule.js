@@ -7,17 +7,15 @@ import axios from "axios";
 
 import { useFetch } from "@refetty/react";
 
-import { IconButton, Box, SimpleGrid, Spinner, Button } from "@chakra-ui/react";
+import { IconButton, Box, SimpleGrid, Spinner} from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { addDays, subDays } from "date-fns";
-
-import { formatDate } from "../modules/components";
 
 import { useAuth } from "../modules/providers";
 
 import { MainApp } from "../modules/wrappers";
 
-import { MainHeader } from "../modules/components";
+import { formatDate, MainHeader, TimeBlock } from "../modules/components";
 
 const getSchedule = async (when) =>
   axios({
@@ -29,19 +27,6 @@ const getSchedule = async (when) =>
     },
   });
 
-const TimeBlock = ({ time }) => {
-  return (
-    <Button
-      textColor="white"
-      backgroundColor="#4E84D4"
-      colorScheme="blue"
-      p={8}
-    >
-      {time}
-    </Button>
-  );
-};
-
 export default function Schedule() {
   const router = useRouter();
   const [auth, { logout }] = useAuth();
@@ -51,8 +36,9 @@ export default function Schedule() {
   });
 
   const removeDay = () => setWhen((prevState) => subDays(when, 1));
-
   const addDay = () => setWhen((prevState) => addDays(when, 1));
+
+
 
   /*   useEffect(() => {
     console.log("useEffect schedule : ");
