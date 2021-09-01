@@ -9,7 +9,7 @@ import { useFetch } from "@refetty/react";
 
 import { IconButton, Box, SimpleGrid, Spinner} from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { addDays, subDays } from "date-fns";
+import { addDays, format, subDays } from "date-fns";
 
 import { useAuth } from "../modules/providers";
 
@@ -17,12 +17,13 @@ import { MainApp } from "../modules/wrappers";
 
 import { formatDate, MainHeader, TimeBlock } from "../modules/components";
 
-const getSchedule = async (when) =>
+const getSchedule = async ({date, ...data}) =>
   axios({
     method: "get",
     url: "/api/schedule",
     params: {
-      when,
+      ...data,
+      date: format("yyyy-MM-dd", date),
       username: window.location.pathname,
     },
   });

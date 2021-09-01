@@ -19,19 +19,19 @@ import {
 
 import { Input } from "../Input";
 
-const setSchedule = async (data) =>{
+const setSchedule = async (values) =>{
   console.log(window.location.pathname)
   axios({
     method: "post",
     url: "/api/schedule",
     params: {
-      ...data,
+      ...values,
       username: window.location.pathname.replace("/",""),
     },
   })
 }
 
-const ModalTimeBlock = ({ isOpen, onClose, onComplete, children }) => {
+const ModalTimeBlock = ({ isOpen, onClose, onComplete, isSubmitting, children }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -43,7 +43,7 @@ const ModalTimeBlock = ({ isOpen, onClose, onComplete, children }) => {
           <Button variant="ghost" onClick={onClose}>
             Cancelar
           </Button>
-          <Button colorScheme="blue" onClick={onComplete}>
+          <Button colorScheme="blue" isLoading={isSubmitting} onClick={onComplete}>
             Reservar horário
           </Button>
         </ModalFooter>
@@ -52,12 +52,17 @@ const ModalTimeBlock = ({ isOpen, onClose, onComplete, children }) => {
   );
 };
 
-export const TimeBlock = ({ time }) => {
+export const TimeBlock = ({ time, date }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((prevState) => !prevState);
 
-  const { values, handleSubmit, handleBlur, handleChange, errors, touched } = useFormik({
-    onSubmit: (values) => setSchedule({...values, when: time}),
+  const { values, handleSubmit, handleBlur, handleChange, isSubmitting, errors, touched } = useFormik({
+    onSubmit: (values) => {
+    try{
+      setSchedule({...values, when: date})
+    }catch (error){
+        console.log(error)
+    }},
     initialValues: {
       name: "",
       phone: "",
@@ -78,7 +83,7 @@ export const TimeBlock = ({ time }) => {
     >
       {time}
 
-      <ModalTimeBlock isOpen={isOpen} onClose={toggle} time={time} onComplete={handleSubmit}>
+      <ModalTimeBlock isOpen={isOpen} onClose={toggle} time={time} isSubmitting="isSubmitting" onComplete={handleSubmit}>
         <>
           <Input
             label="Nome:"
@@ -101,6 +106,7 @@ export const TimeBlock = ({ time }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             size="lg"
+            onBlur={handleBlur}
           />
         </>
       </ModalTimeBlock>

@@ -29,22 +29,24 @@ const getUserId = async (username) => {
 
 const setSchedule = async (req, res) => {
   const userId = await getUserId(req.query.username)
+  const docId = `${userId}@${req.query.date}:{req.query.time}`
 
   const doc = await agenda.doc(`${userId}@${req.query.when}`).get()
 
   if(doc.exists) {
-    
+    console.log("sending status 400 cause agenda entry detected")
     return res.status(400)
   }
 
-  agenda.doc(`${userId}@${req.query.when}`).set({
+  const block = await agenda.doc(docId).set({
     userId,
-    when: req.query.when,
+    date: req.query.date,
+    time: req.query.time,
     name: req.query.name,
     phone: req.query.phone,
   })
 
-  return res.status(200)
+  return res.status(200).json(block)
 }
 
 const getSchedule = async (req, res) => {
