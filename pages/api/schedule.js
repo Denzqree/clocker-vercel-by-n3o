@@ -10,25 +10,25 @@ const startAt = new Date(2021, 1, 1, 8, 0)
 const endAt = new Date(2021, 1, 1, 17, 0)
 const totalHours = differenceInHours(endAt, startAt)
 
-const timeblocks = []
+const timeBlocks = []
 
 for(let blockIndex = 0; blockIndex <= totalHours; blockIndex++){
   const time = format(addHours(startAt, blockIndex), 'HH:mm')
-  timeblocks.push(time);
+  timeBlocks.push(time);
 }
 
-console.log(timeblocks)
+console.log(timeBlocks)
 
 export default async (req, res) => {
-  try {
+  try {/* 
     const profileDoc = await profile
       .where("username", "==", req.query.username)
       .get();
     const snapshot = await agenda
       .where("userId", "==", profileDoc.user_id)
       .where("when", "==", req.query.when)
-      .get();
-    return res.status(200).json(snapshot.docs);
+      .get(); */
+    return res.status(200).json(timeBlocks);
   } catch (error) {
     console.log("FB ERROR:", error);
     return res.status(401);
