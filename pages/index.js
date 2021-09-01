@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import router from "next/router";
 
-import { Text, Spinner } from "@chakra-ui/react";
+import { Box, Text, Spinner } from "@chakra-ui/react";
 
 import { useAuth } from "../modules/providers";
 
@@ -23,8 +23,10 @@ export default function Home() {
 
   return (
     <CentererBox>
+      <Box height="100%" width="100%" display="flex" alignItems="center" justifyContent="center">
         <Spinner />
         <Text>&nbsp;Carregando...</Text>
+        </Box>
     </CentererBox>
   );
 }
