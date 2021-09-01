@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react"
+import { ChakraProvider, Link } from "@chakra-ui/react"
 
 import { AuthProvider } from './../modules/providers'
 
@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }) {
           <AppBox>
               <Component {...pageProps} />
           </AppBox>
-          <Footer>Made by N3O - admin(at)n3o.pt<br />https://github.com/Denzqree/clocker-vercel-by-n3o</Footer>
+          <Footer>Made by N3O - admin(at)n3o.pt<br /><Link href="https://github.com/Denzqree/clocker-vercel-by-n3o">github.com/Denzqree/clocker-vercel-by-n3o</Link></Footer>
         </AuthProvider>
     </ChakraProvider>
   )
