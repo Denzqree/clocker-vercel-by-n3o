@@ -18,16 +18,18 @@ import {
 } from "@chakra-ui/react";
 
 import { Input } from "../Input";
-/* 
-const setSchedule = async data =>
+
+const setSchedule = async (data) =>{
+  console.log(window.location.pathname)
   axios({
-    method: "get",
+    method: "post",
     url: "/api/schedule",
     params: {
       ...data,
-      username: window.location.pathname,
+      username: window.location.pathname.replace("/",""),
     },
-  }); */
+  })
+}
 
 const ModalTimeBlock = ({ isOpen, onClose, onComplete, children }) => {
   return (
@@ -54,8 +56,8 @@ export const TimeBlock = ({ time }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((prevState) => !prevState);
 
-  const { values, handleBlur, handleChange, touched, errors } = useFormik({
-    onSubmit: () => {} //(values) => setSchedule(values),
+  const { values, handleSubmit, handleBlur, handleChange, errors, touched } = useFormik({
+    onSubmit: (values) => setSchedule({...values, when: time}),
     initialValues: {
       name: "",
       phone: "",
@@ -76,7 +78,7 @@ export const TimeBlock = ({ time }) => {
     >
       {time}
 
-      <ModalTimeBlock isOpen={isOpen} onClose={toggle} time={time}>
+      <ModalTimeBlock isOpen={isOpen} onClose={toggle} time={time} onComplete={handleSubmit}>
         <>
           <Input
             label="Nome:"
