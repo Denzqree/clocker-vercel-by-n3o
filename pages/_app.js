@@ -6,6 +6,7 @@ import { AppBox } from "../modules/wrappers"
 
 import { Footer } from "../modules/wrappers"
 
+import '../styles/globals.css';
 import '../styles/text.css';
 
 function MyApp({ Component, pageProps }) {

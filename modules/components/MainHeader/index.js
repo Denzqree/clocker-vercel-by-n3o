@@ -22,6 +22,7 @@ export const MainHeader = ({ children, logout }) => {
       minWidth="320px"
       maxWidth="640px"
       height="80px"
+      flex="none"
     >
       <Logo size="170px" />
       {children}
