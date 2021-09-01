@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react'
 
 export const AppBox = ({ children }) => {
     return (
-        <Box width="100vw" className="app">
+        <Box width="100vw" className="app" height="100vh">
             { children }
         </Box>
     )

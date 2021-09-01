@@ -22,11 +22,9 @@ export default function Home() {
   }, [auth]);
 
   return (
-    <CentererBox>
-      <Box height="100%" width="100%" display="flex" alignItems="center" justifyContent="center">
+    <Box height="100%" display="flex" alignItems="center" justifyContent="center">
         <Spinner />
         <Text>&nbsp;Carregando...</Text>
-        </Box>
-    </CentererBox>
+    </Box>
   );
 }
