@@ -108,13 +108,11 @@ export default function Login() {
             />
           </FormControl>
 
-          <Box mt="3" fontSize="14px">
-            <Box display="flex">
+          <Box mt="3" fontSize="14px" display="flex" justifyContent="center">
               <Text>Ainda não tem uma conta ?&nbsp;</Text>
               <Link display="flex" href="/register">
                 <Text className="toUnderline">Cadastre-se.</Text>
               </Link>
-            </Box>
           </Box>
         </Box>
 

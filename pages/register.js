@@ -134,14 +134,14 @@ export default function Register() {
             </InputGroup>
           </FormControl>
 
-          <Container centerContent mt="3" fontSize="14px">
+          <Box mt="3" fontSize="14px" display="flex" justifyContent="center">
             <Box display="flex">
               <Text>Já tem uma conta ?&nbsp;</Text>
               <Link display="flex" href="/login">
                 <Text className="toUnderline">Entre.</Text>
               </Link>
             </Box>
-          </Container>
+          </Box>
         </Box>
 
         <Box p={4}>
