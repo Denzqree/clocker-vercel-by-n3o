@@ -1,7 +1,11 @@
 import { differenceInHours, format, addHours }  from 'date-fns'
 
 import firebaseServer from "./../../config/firebase/server";
-import profile from "./profile";
+
+const methods = {
+  POST: setSchedule,
+  GET: getSchedule,
+}
 
 const db = firebaseServer.firestore();
 const profiles = db.collection("profiles");
@@ -11,6 +15,7 @@ const agenda = db.collection("agenda");
 const startAt = new Date(2021, 1, 1, 8, 0)
 const endAt = new Date(2021, 1, 1, 17, 0)
 const totalHours = differenceInHours(endAt, startAt)
+
 
 const timeBlocks = []
 
@@ -25,6 +30,31 @@ const getUserId = async (username) => {
       .get();
   const { userId } = profileDoc.docs[0].data()
   return userId;
+}
+
+const getSchedule = async (req, res) => {
+  try{
+    const userId = await getUserId(req.query.username)
+    const snapshot = await agenda
+    .where()
+    .where()
+    .get()
+
+    const docs = snapshot.docs[0].map(doc => doc.data())
+
+    const result = toBlockedList.map(time => return {
+      time,
+      isBlocked: !!docs.find(doc => doc.time === time)
+    })
+
+
+
+
+
+  }catch(error){
+
+  }
+    return res.status().json(result)
 }
 
 const setSchedule = async (req, res) => {
@@ -63,11 +93,6 @@ const getSchedule = async (req, res) => {
     console.log("FIREBASE ERROR:", error)
     return res.status(401);
   }
-}
-
-const methods = {
-  POST: setSchedule,
-  GET: getSchedule,
 }
 
 export default async (req, res) => {

@@ -9,7 +9,7 @@ import { useFetch } from "@refetty/react"
 
 import { IconButton, Box, Link } from "@chakra-ui/react"
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
-import { addDays, subDays } from "date-fns"
+import { addDays, subDays, format } from "date-fns"
 
 import { getToken } from "../config/firebase/client"
 
@@ -27,7 +27,7 @@ const getAgenda = async (when) => {
     method: "get",
     url: "/api/agenda",
     params: {
-      when,
+      when: format(when, "yyyy-MM-dd"),
     },
     headers: {
       Authorization: `Bearer ${token}`,

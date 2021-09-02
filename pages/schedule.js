@@ -17,13 +17,13 @@ import { MainApp } from "../modules/wrappers";
 
 import { formatDate, MainHeader, TimeBlock } from "../modules/components";
 
-const getSchedule = async ({date, ...data}) =>
+const getSchedule = async ({when}) =>
   axios({
     method: "get",
     url: "/api/schedule",
     params: {
       ...data,
-      date: format("yyyy-MM-dd", date),
+      date: format(when, "yyyy-MM-dd"),
       username: window.location.pathname,
     },
   });
