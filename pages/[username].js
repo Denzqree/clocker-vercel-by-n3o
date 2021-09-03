@@ -17,24 +17,23 @@ import { MainApp } from "../modules/wrappers";
 
 import { formatDate, MainHeader, TimeBlock } from "../modules/components";
 
-const getSchedule = async ({ when }) =>
+const getSchedule = async (when, username) =>
   axios({
     method: "get",
     url: "/api/schedule",
     params: {
       date: format(when, "yyyy-MM-dd"),
-      username: window.location.pathname.replace("/", ""),
+      username,
     }
-  });
+  })
 
 export default function Schedule() {
   const router = useRouter();
   const [auth, { logout }] = useAuth();
   const [when, setWhen] = useState(() => new Date());
-  const [data, { loading, status, error }, fetch] = useFetch((when) => getSchedule({ when }), {
+  const [data, { loading, status, error }, fetch] = useFetch((when, username) => getSchedule(when, username), {
     lazy: true,
   });
-
 
   const removeDay = () => setWhen((prevState) => subDays(when, 1));
   const addDay = () => setWhen((prevState) => addDays(when, 1));
@@ -49,8 +48,11 @@ export default function Schedule() {
   }, [auth.user]) */
 
   useEffect(() => {
-    fetch(when);
-  }, [when]);
+    console.log(when)
+    fetch(when, router.query.username)
+  }, [when, router.query.username]);
+
+  
 
   return (
     <Box>
@@ -112,7 +114,7 @@ export default function Schedule() {
                 />
               )}
               
-              {console.log(data)}{data?.map(({ time, isBlocked }) => (
+              {data?.map(({ time, isBlocked }) => (
                 <TimeBlock key={time} date={when} time={time} disabled={isBlocked} />
               ))}
             </SimpleGrid>
