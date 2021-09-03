@@ -7,7 +7,7 @@ import axios from "axios"
 
 import { useFetch } from "@refetty/react"
 
-import { IconButton, Box, Link, Spinner } from "@chakra-ui/react"
+import { IconButton, Box, Link, Spinner, Text } from "@chakra-ui/react"
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import { addDays, subDays, format } from "date-fns"
 
