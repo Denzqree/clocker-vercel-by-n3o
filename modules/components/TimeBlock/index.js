@@ -134,12 +134,13 @@ export const TimeBlock = ({ time, date, disabled }) => {
               touched={touched.phone}
               name="phone"
               error={errors.phone}
-              placeholder="(99) 999 999 999"
+              placeholder="(999) 999 999 999"
               value={values.phone}
               onChange={handleChange}
               onBlur={handleBlur}
               size="lg"
-              disabled={isSubmitting}
+              disabled={isSubmitting}s
+              mask={['(99) 999 999 999','(999) 9 9999-9999']}
             />
           </>
         </ModalTimeBlock>

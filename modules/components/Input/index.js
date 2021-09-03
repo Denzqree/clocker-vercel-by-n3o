@@ -1,3 +1,5 @@
+import { mask, unMask } from "remask"
+
 import {
   Input as InputBase,
   Box,
@@ -6,7 +8,14 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 
-export const Input = ({ error, label, touched, ...props }) => {
+export const Input = ({ error, label, touched, onChange, mask: pattern, ...props }) => {
+
+  const handleChange = event => {
+    const unmaskedValue = unMask(event.target.value)
+    const maskedValue = mask(unmaskedValue, pattern)
+    onChange && onChange(event.target.name)(maskedValue)
+  }
+
   return (
     <Box>
         <FormControl id={props.name} mt={2} minHeight={10} isRequired>
@@ -18,7 +27,7 @@ export const Input = ({ error, label, touched, ...props }) => {
               </FormHelperText>
             )}
           </Box>
-          <InputBase {...props} />
+          <InputBase {...props} onChange={pattern ? handleChange : onChange} />
         </FormControl>
     </Box>
   );
