@@ -9,7 +9,7 @@ import { useFetch } from "@refetty/react";
 
 import { IconButton, Box, SimpleGrid, Spinner } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { addDays, format, subDays } from "date-fns";
+import { addDays, subDays, format } from "date-fns";
 
 import { useAuth } from "../modules/providers";
 
@@ -111,8 +111,9 @@ export default function Schedule() {
                   size="xl"
                 />
               )}
-              {data?.map((time) => (
-                <TimeBlock key={time} date={when} time={time} />
+              
+              {console.log(data)}{data?.map(({ time, isBlocked }) => (
+                <TimeBlock key={time} date={when} time={time} disabled={isBlocked} />
               ))}
             </SimpleGrid>
           </Box>

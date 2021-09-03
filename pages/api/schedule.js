@@ -26,46 +26,55 @@ const getUserId = async (username) => {
   const { userId } = profileDoc.docs[0].data()
   return userId;
 }
-/* 
+
 const getSchedule = async (req, res) => {
   try{
     const userId = await getUserId(req.query.username)
     const snapshot = await agenda
-    .where("userId", "==", req.query.username)
-    .get();
+    .where("userId", "==", userId)
+    .where("date", "==", req.query.date)
+    .get()
 
-    const docs = snapshot.docs[0].map(doc => doc.data())
+    const docsArray = []
 
-    const result = lockedTimeBlocks.map(time => {
-      return {
+    snapshot.forEach(doc => docsArray.push(doc.data()))
+
+    const result = allTimeBlocks.map((time) => ({
       time,
-      isBlocked: !!docs.find(doc => doc.time === time)
-      }
-    })
+      isBlocked: !!docsArray.find(doc => doc.time === time)
+    }))
+
+    return res.status(200).json(result) 
   }catch(error){ // --- res.status = not this (delete this upon fix) 
     return res.status(404)
-  }  // --- res.status = not this (delete this upon fix)
-    return res.status(200).json(result)
+  } // --- res.status = not this (delete this upon fix)
+
 }
- */
+ /* 
 const getSchedule = async (req, res) => {
   try {
+    const userId = await getUserId(req.query.username)
+
+    const docs = await agenda
+      .where('userId', '==', userId)
+      .where('date', '==', req.query.when)
+      .get()
+
     
-    /* 
     const profileDoc = await profile
       .where("username", "==", req.query.username)
       .get();
     const snapshot = await agenda
       .where("userId", "==", profileDoc.user_id)
       .where("when", "==", req.query.when)
-      .get();  */
+      .get();
     console.log("getting schedule....")
     return res.status(200).json(allTimeBlocks);
   } catch (error) {
     console.log("FIREBASE ERROR:", error)
     return res.status(401);
   }
-}
+} */
 
 const setSchedule = async (req, res) => {
   const userId = await getUserId(req.query.username)
