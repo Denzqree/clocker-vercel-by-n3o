@@ -6,7 +6,7 @@ import firebaseClient, { persistenceMode } from './../../../config/firebase/clie
 
 const AuthContext = React.createContext([{}, () => {}]);
 
-export const login = async ({ email, password}) => {
+export const login = async ({ email, password }) => {
     firebaseClient.auth().setPersistence(persistenceMode);
 
     try {
@@ -15,7 +15,7 @@ export const login = async ({ email, password}) => {
         .signInWithEmailAndPassword(email, password);
         return firebaseClient.auth().currentUser
     } catch (err) {
-      console.log('ERROR ' + err);
+      console.log('LOGIN ERROR ' + err);
     }
 }
 
@@ -30,15 +30,16 @@ export const signup = async ({email, password, username}) => {
           const user = await login({email, password})
           const token = await user.getIdToken();
           //setupProfile(token, username)
-          const { data } = await axios({
+          await axios({
             method: 'post',
             url: '/api/profile',
+            params: {
+              username,
+            },
             headers: {
               'Authorization': `Bearer ${token}`
             },
-            data: {username}
             })
-            console.log(data)
       } catch (err) {
         console.log(err);
       }
