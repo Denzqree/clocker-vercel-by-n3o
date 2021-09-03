@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 
 import * as yup from "yup";
 
-import axios from 'axios';
+import axios from "axios";
 
 import {
   Button,
@@ -18,20 +18,27 @@ import {
 } from "@chakra-ui/react";
 
 import { Input } from "../Input";
+import { format } from "date-fns";
 
-const setSchedule = async (values) =>{
-  console.log(window.location.pathname)
+const setSchedule = async ({ date, time, ...values }) =>
   axios({
     method: "post",
     url: "/api/schedule",
     params: {
       ...values,
-      username: window.location.pathname.replace("/",""),
+      date,
+      time,
+      username: window.location.pathname.replace("/", ""),
     },
-  })
-}
+  });
 
-const ModalTimeBlock = ({ isOpen, onClose, onComplete, isSubmitting, children }) => {
+const ModalTimeBlock = ({
+  isOpen,
+  onClose,
+  onComplete,
+  isSubmitting,
+  children,
+}) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -40,10 +47,16 @@ const ModalTimeBlock = ({ isOpen, onClose, onComplete, isSubmitting, children })
         <ModalCloseButton />
         <ModalBody>{children}</ModalBody>
         <ModalFooter justifyContent="space-between">
-          <Button variant="ghost" onClick={onClose}>
-            Cancelar
-          </Button>
-          <Button colorScheme="blue" isLoading={isSubmitting} onClick={onComplete}>
+          {!isSubmitting && (
+            <Button variant="ghost" onClick={onClose}>
+              Cancelar
+            </Button>
+          )}
+          <Button
+            colorScheme="blue"
+            isLoading={isSubmitting}
+            onClick={onComplete}
+          >
             Reservar horário
           </Button>
         </ModalFooter>
@@ -56,13 +69,27 @@ export const TimeBlock = ({ time, date }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((prevState) => !prevState);
 
-  const { values, handleSubmit, handleBlur, handleChange, isSubmitting, errors, touched } = useFormik({
-    onSubmit: (values) => {
-    try{
-      setSchedule({...values, when: date})
-    }catch (error){
-        console.log(error)
-    }},
+  const {
+    values,
+    handleSubmit,
+    handleBlur,
+    handleChange,
+    errors,
+    touched,
+    isSubmitting,
+  } = useFormik({
+    onSubmit: async (values) => {
+      try {
+        await setSchedule({
+          ...values,
+          date: format(date, "yyyy-MM-dd"),
+          time: time,
+        });
+        toggle();
+      } catch (error) {
+        
+      }
+    },
     initialValues: {
       name: "",
       phone: "",
@@ -82,8 +109,14 @@ export const TimeBlock = ({ time, date }) => {
       onClick={toggle}
     >
       {time}
-
-      <ModalTimeBlock isOpen={isOpen} onClose={toggle} time={time} isSubmitting="isSubmitting" onComplete={handleSubmit}>
+      {console.log("isSubmitting: ", isSubmitting)}
+      <ModalTimeBlock
+        isOpen={isOpen}
+        onClose={toggle}
+        time={time}
+        onComplete={handleSubmit}
+        isSubmitting={isSubmitting}
+      >
         <>
           <Input
             label="Nome:"
@@ -95,6 +128,7 @@ export const TimeBlock = ({ time, date }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             size="lg"
+            disabled={isSubmitting}
           />
           <Input
             label="Número de telefone:"
@@ -106,7 +140,7 @@ export const TimeBlock = ({ time, date }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             size="lg"
-            onBlur={handleBlur}
+            disabled={isSubmitting}
           />
         </>
       </ModalTimeBlock>

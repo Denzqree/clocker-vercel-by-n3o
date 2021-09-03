@@ -7,7 +7,7 @@ import axios from "axios";
 
 import { useFetch } from "@refetty/react";
 
-import { IconButton, Box, SimpleGrid, Spinner} from "@chakra-ui/react";
+import { IconButton, Box, SimpleGrid, Spinner } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { addDays, format, subDays } from "date-fns";
 
@@ -17,29 +17,27 @@ import { MainApp } from "../modules/wrappers";
 
 import { formatDate, MainHeader, TimeBlock } from "../modules/components";
 
-const getSchedule = async ({when}) =>
+const getSchedule = async ({ when }) =>
   axios({
     method: "get",
     url: "/api/schedule",
     params: {
-      ...data,
       date: format(when, "yyyy-MM-dd"),
-      username: window.location.pathname,
-    },
+      username: window.location.pathname.replace("/", ""),
+    }
   });
 
 export default function Schedule() {
   const router = useRouter();
   const [auth, { logout }] = useAuth();
   const [when, setWhen] = useState(() => new Date());
-  const [data, { loading, status, error }, fetch] = useFetch(getSchedule, {
+  const [data, { loading, status, error }, fetch] = useFetch((when) => getSchedule({ when }), {
     lazy: true,
   });
 
+
   const removeDay = () => setWhen((prevState) => subDays(when, 1));
   const addDay = () => setWhen((prevState) => addDays(when, 1));
-
-
 
   /*   useEffect(() => {
     console.log("useEffect schedule : ");
@@ -114,7 +112,7 @@ export default function Schedule() {
                 />
               )}
               {data?.map((time) => (
-                <TimeBlock key={time} time={time} />
+                <TimeBlock key={time} date={when} time={time} />
               ))}
             </SimpleGrid>
           </Box>

@@ -2,11 +2,6 @@ import { differenceInHours, format, addHours }  from 'date-fns'
 
 import firebaseServer from "./../../config/firebase/server";
 
-const methods = {
-  POST: setSchedule,
-  GET: getSchedule,
-}
-
 const db = firebaseServer.firestore();
 const profiles = db.collection("profiles");
 
@@ -16,12 +11,12 @@ const startAt = new Date(2021, 1, 1, 8, 0)
 const endAt = new Date(2021, 1, 1, 17, 0)
 const totalHours = differenceInHours(endAt, startAt)
 
-
-const timeBlocks = []
+const allTimeBlocks = []
+const lockedTimeBlocks = []
 
 for(let blockIndex = 0; blockIndex <= totalHours; blockIndex++){
   const time = format(addHours(startAt, blockIndex), 'HH:mm')
-  timeBlocks.push(time);
+  allTimeBlocks.push(time);
 }
 
 const getUserId = async (username) => {
@@ -31,41 +26,54 @@ const getUserId = async (username) => {
   const { userId } = profileDoc.docs[0].data()
   return userId;
 }
-
+/* 
 const getSchedule = async (req, res) => {
   try{
     const userId = await getUserId(req.query.username)
     const snapshot = await agenda
-    .where()
-    .where()
-    .get()
+    .where("userId", "==", req.query.username)
+    .get();
 
     const docs = snapshot.docs[0].map(doc => doc.data())
 
-    const result = toBlockedList.map(time => return {
+    const result = lockedTimeBlocks.map(time => {
+      return {
       time,
       isBlocked: !!docs.find(doc => doc.time === time)
+      }
     })
-
-
-
-
-
-  }catch(error){
-
+  }catch(error){ // --- res.status = not this (delete this upon fix) 
+    return res.status(404)
+  }  // --- res.status = not this (delete this upon fix)
+    return res.status(200).json(result)
+}
+ */
+const getSchedule = async (req, res) => {
+  try {/* 
+    const profileDoc = await profile
+      .where("username", "==", req.query.username)
+      .get();
+    const snapshot = await agenda
+      .where("userId", "==", profileDoc.user_id)
+      .where("when", "==", req.query.when)
+      .get();  */
+    console.log("getting schedule....")
+    return res.status(200).json(allTimeBlocks);
+  } catch (error) {
+    console.log("FIREBASE ERROR:", error)
+    return res.status(401);
   }
-    return res.status().json(result)
 }
 
 const setSchedule = async (req, res) => {
   const userId = await getUserId(req.query.username)
-  const docId = `${userId}@${req.query.date}:{req.query.time}`
+  const docId = `${userId}@${req.query.date}:${req.query.time}`
 
-  const doc = await agenda.doc(`${userId}@${req.query.when}`).get()
+  const doc = await agenda.doc(docId).get()
 
   if(doc.exists) {
     console.log("sending status 400 cause agenda entry detected")
-    return res.status(400)
+    return res.status(400).json({message:"Time blocked !"})
   }
 
   const block = await agenda.doc(docId).set({
@@ -79,20 +87,9 @@ const setSchedule = async (req, res) => {
   return res.status(200).json(block)
 }
 
-const getSchedule = async (req, res) => {
-  try {/* 
-    const profileDoc = await profile
-      .where("username", "==", req.query.username)
-      .get();
-    const snapshot = await agenda
-      .where("userId", "==", profileDoc.user_id)
-      .where("when", "==", req.query.when)
-      .get();  */
-    return res.status(200).json(timeBlocks);
-  } catch (error) {
-    console.log("FIREBASE ERROR:", error)
-    return res.status(401);
-  }
+const methods = {
+  POST: setSchedule,
+  GET: getSchedule,
 }
 
 export default async (req, res) => {
