@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }) {
         <AuthProvider>
           <AppBox>
               <Component {...pageProps} />
-              <Footer>Made by N3O - admin(at)n3o.pt<br /><Link href="https://github.com/Denzqree/clocker-by-n3o">github.com/Denzqree/clocker-vercel-by-n3o</Link></Footer>
+              <Footer>Made by N3O - admin(at)n3o.pt<br /><Link href="https://github.com/Denzqree/clocker-by-n3o">github.com/Denzqree/clocker-by-n3o</Link></Footer>
           </AppBox>
         </AuthProvider>
     </ChakraProvider>
