@@ -26,7 +26,7 @@ const setSchedule = async ({ date, time, ...values }) =>
     url: "/api/schedule",
     params: {
       ...values,
-      date,
+      date: format(date, "yyyy-MM-dd"),
       time,
       username: window.location.pathname.replace("/", ""),
     },
@@ -82,8 +82,8 @@ export const TimeBlock = ({ time, date }) => {
       try {
         await setSchedule({
           ...values,
-          date: format(date, "yyyy-MM-dd"),
-          time: time,
+          date,
+          time,
         });
         toggle();
       } catch (error) {

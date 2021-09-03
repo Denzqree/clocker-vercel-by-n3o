@@ -49,7 +49,9 @@ const getSchedule = async (req, res) => {
 }
  */
 const getSchedule = async (req, res) => {
-  try {/* 
+  try {
+    
+    /* 
     const profileDoc = await profile
       .where("username", "==", req.query.username)
       .get();
@@ -67,7 +69,7 @@ const getSchedule = async (req, res) => {
 
 const setSchedule = async (req, res) => {
   const userId = await getUserId(req.query.username)
-  const docId = `${userId}@${req.query.date}:${req.query.time}`
+  const docId = `${userId}#{req.query.date}#${req.query.time}`
 
   const doc = await agenda.doc(docId).get()
 
