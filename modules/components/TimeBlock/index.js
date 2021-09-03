@@ -94,7 +94,7 @@ export const TimeBlock = ({ time, date, disabled }) => {
     },
     validationSchema: yup.object().shape({
       name: yup.string().required("Preenchimento obrigatório"),
-      phone: yup.number().required("Preenchimento obrigatório"),
+      phone: yup.string().required("Preenchimento obrigatório"),
     }),
   });
 

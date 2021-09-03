@@ -8,12 +8,12 @@ const profile = db.collection('profiles')
 
 export default async (req, res) => {
   const [, token] = req.headers.authorization.split(' ')
-  const { user_id } = await firebaseServer.auth().verifyIdToken(token)
+  const { uid } = await firebaseServer.auth().verifyIdToken(token)
 
-  profile.doc(req.body.username).set({
-    userId: user_id,
-    username: req.body.username
+  profile.doc(req.query.username).set({
+    userId: uid,
+    username: req.query.username
   })
 
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json({ message: 'User signed in succesfully'})
 }

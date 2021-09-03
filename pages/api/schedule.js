@@ -34,25 +34,28 @@ const getUserId = async (username) => {
 
 const getSchedule = async (req, res) => {
   console.log(req.query.date)
+  console.log(req.query.username)
   try{
-    const userId = await getUserId(req.query.username)
+    const userIdFetch = await getUserId(req.query.username)
 
-    if(!userId){
+    console.log(userIdFetch);
+
+    if(!userIdFetch){
       return res.status(404).json({message:"Invalid username"})
     }
-
+    
     const snapshot = await agenda
-    .where("userId", "==", userId)
-    .where("date", "==", req.query.date)
-    .get()
+      .where("userId", "==", userIdFetch)
+      .where("date", "==", req.query.date)
+      .get();
 
-    const docsArray = []
+    const docs = []
 
-    snapshot.forEach(doc => docsArray.push(doc.data()))
+    snapshot.forEach(doc => docs.push(doc.data()))
 
     const result = allTimeBlocks.map((time) => ({
       time,
-      isBlocked: !!docsArray.find(doc => doc.time === time)
+      isBlocked: !!docs.find(doc => doc.time === time)
     }))
 
     return res.status(200).json(result) 
@@ -61,35 +64,10 @@ const getSchedule = async (req, res) => {
   } // --- res.status = not this (delete this upon fix)
 
 }
- /* 
-const getSchedule = async (req, res) => {
-  try {
-    const userId = await getUserId(req.query.username)
-
-    const docs = await agenda
-      .where('userId', '==', userId)
-      .where('date', '==', req.query.when)
-      .get()
-
-    
-    const profileDoc = await profile
-      .where("username", "==", req.query.username)
-      .get();
-    const snapshot = await agenda
-      .where("userId", "==", profileDoc.user_id)
-      .where("when", "==", req.query.when)
-      .get();
-    console.log("getting schedule....")
-    return res.status(200).json(allTimeBlocks);
-  } catch (error) {
-    console.log("FIREBASE ERROR:", error)
-    return res.status(401);
-  }
-} */
 
 const setSchedule = async (req, res) => {
   const userId = await getUserId(req.query.username)
-  const docId = `${userId}#{req.query.date}#${req.query.time}`
+  const docId = `${userId}#${req.query.date}#${req.query.time}`
 
   const doc = await agenda.doc(docId).get()
 

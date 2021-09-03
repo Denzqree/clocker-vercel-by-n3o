@@ -17,8 +17,8 @@ import { MainApp } from "../modules/wrappers";
 
 import { formatDate, MainHeader, TimeBlock } from "../modules/components";
 
-const getSchedule = async (when, username) =>
-  axios({
+const getSchedule = async (when, username) => 
+  await axios({
     method: "get",
     url: "/api/schedule",
     params: {
@@ -29,9 +29,10 @@ const getSchedule = async (when, username) =>
 
 export default function Schedule() {
   const router = useRouter();
+  //leave useauth for displaying go to my agenda in header
   const [auth, { logout }] = useAuth();
   const [when, setWhen] = useState(() => new Date());
-  const [data, { loading, status, error }, fetch] = useFetch((when, username) => getSchedule(when, username), {
+  const [data, { loading, status, error }, fetch] = useFetch(getSchedule, {
     lazy: true,
   });
 
@@ -48,8 +49,9 @@ export default function Schedule() {
   }, [auth.user]) */
 
   useEffect(() => {
-    console.log(when)
+    if(router.query.username){
     fetch(when, router.query.username)
+  }
   }, [when, router.query.username]);
 
   
@@ -57,7 +59,7 @@ export default function Schedule() {
   return (
     <Box>
       <MainApp>
-        <MainHeader logout={logout}>clocker.n3o.pt</MainHeader>
+        <MainHeader>clocker.n3o.pt</MainHeader>
 
         <Box paddingX={8}>
           <Box

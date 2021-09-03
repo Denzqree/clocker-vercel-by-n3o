@@ -7,7 +7,7 @@ import axios from "axios"
 
 import { useFetch } from "@refetty/react"
 
-import { IconButton, Box, Link } from "@chakra-ui/react"
+import { IconButton, Box, Link, Spinner } from "@chakra-ui/react"
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import { addDays, subDays, format } from "date-fns"
 
@@ -23,11 +23,14 @@ import { MainHeader } from "../modules/components"
 
 const getAgenda = async (when) => {
   const token = await getToken()
-  axios({
+  if(!token){
+    return
+  }
+  await axios({
     method: "get",
     url: "/api/agenda",
     params: {
-      when: format(when, "yyyy-MM-dd"),
+      date: format(when, "yyyy-MM-dd"),
     },
     headers: {
       Authorization: `Bearer ${token}`,
@@ -46,14 +49,21 @@ export default function Agenda() {
   const addDay = () =>  setWhen(prevState => addDays(when, 1))
 
   useEffect(() => {
+    !auth.user && router.push("/");
+  }, [auth.user])
+
+  useEffect(() => {
       fetch(when)
   },[when])
 
-  useEffect(() => {
-    console.log("useEffect agenda : ");
-    console.log(auth);
-    !auth.user && router.push("/");
-  }, [auth.user])
+  const AgendaBlock = (time, name, phone) => (
+    <Box display="flex">
+      <Box flex={1}>{time}</Box>
+      <Box><Text size="xl">{name}</Text>
+      <Text size="sm">{phone}</Text>
+      </Box>
+    </Box>
+  )
 
   return (
     auth.user && (
@@ -100,7 +110,22 @@ export default function Agenda() {
               borderWidth="1px"
               borderRadius="lg"
             >
-              test
+              {console.log("is agenda loading... ",loading)}
+              {loading && (
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="xl"
+                />
+              )}
+              {console.log(data)}
+              {
+              data?.map(doc => (
+                <AgendaBlock key={doc.time} time={doc.time} name={doc.name} phone={doc.phone} />
+              ))
+              }
             </Box>
           </Box>
         </MainApp>
