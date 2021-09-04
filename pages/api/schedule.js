@@ -90,20 +90,5 @@ const methods = {
 }
 
 export default async (req, res) => {
-
   methods[req.method] ? methods[req.method](req,res) : res.status(405)
-/*  
-  try {/* 
-    const profileDoc = await profile
-      .where("username", "==", req.query.username)
-      .get();
-    const snapshot = await agenda
-      .where("userId", "==", profileDoc.user_id)
-      .where("when", "==", req.query.when)
-      .get();
-    return res.status(200).json(timeBlocks);
-  } catch (error) {
-    console.log("FIREBASE ERROR:", error)
-    return res.status(401);
-  } */
 }
