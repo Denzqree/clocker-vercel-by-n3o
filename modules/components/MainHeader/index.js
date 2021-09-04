@@ -26,8 +26,9 @@ export const MainHeader = ({ children, logout }) => {
       height="80px"
       flex="none"
       borderBottomWidth="1px"
-    >
+    > <Box height="auto" width="170px" cursor="pointer" onClick={(event) => (window.location.href = "/")}>
       <Logo size="170px" />
+      </Box>
       {logout && 
       <Button
         borderWidth="1px"

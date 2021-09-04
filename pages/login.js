@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -8,7 +8,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import {
-  Container,
   Box,
   Input,
   Button,
@@ -17,6 +16,11 @@ import {
   FormLabel,
   FormHelperText,
   Divider,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  ModalBody,
 } from "@chakra-ui/react";
 
 import { useAuth } from "../modules/providers";
@@ -32,20 +36,41 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("Preenchimento obrigatório"),
 });
 
+
+const ModalErrorPopup = ({ isOpen, onClose, children }) => {
+  return (
+    <Modal size="sm" isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent height="auto" padding={4}>
+        <ModalCloseButton />
+        <Box display="flex" alignItems="center" textAlign="center" marginY={4}>
+        <ModalBody>{children}
+        </ModalBody>
+        </Box>
+      </ModalContent>
+    </Modal>
+  );
+};
+
 export default function Login() {
   const router = useRouter();
   const [auth, { login }] = useAuth();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen((prevState) => !prevState);
+
+  const [loginError, setLoginError] = useState();
+
+  const displayError = (error) => {
+    setLoginError(error);
+    toggle();
+  }
 
   useEffect(() => {
     console.log("useEffect login : ");
     console.log(auth);
     auth.user && router.push("/agenda");
   }, [auth.user]);
-
-  const authSubmit = (values) => {
-    console.log(login);
-    login(values);
-  };
 
   const {
     values,
@@ -56,7 +81,17 @@ export default function Login() {
     handleSubmit,
     isSubmitting,
   } = useFormik({
-    onSubmit: (values) => authSubmit(values),
+    onSubmit: async (values) => {
+      await login(values).then(result => {
+        if(result.error){
+        switch(result.error.code){
+          case "auth/user-not-found" : displayError("Esse utilizador não foi encontrado.")
+          case "auth/wrong-password" : displayError("A palavra-passe está errada.")
+          case "auth/too-many-requests" : displayError("Você já tentou demasiadas vezes, espere um pouco e volte a tentar.")
+        }
+      }
+      })
+    },
     validationSchema,
     initialValues: {
       email: "",
@@ -66,6 +101,9 @@ export default function Login() {
 
   return (
     <CentererBox>
+      <ModalErrorPopup isOpen={isOpen} onClose={toggle}>
+        {loginError}
+      </ModalErrorPopup>
       <LoginApp>
         <LoginHeader />
 

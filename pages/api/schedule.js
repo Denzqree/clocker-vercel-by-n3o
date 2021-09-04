@@ -32,9 +32,8 @@ const getUserId = async (username) => {
 }
 
 const getSchedule = async (req, res) => {
-  console.log(req.query.date)
-  console.log(req.query.username)
   try{
+    console.log("getschedule username: ",req.query.username)
     const userIdFetch = await getUserId(req.query.username)
 
     console.log(userIdFetch);

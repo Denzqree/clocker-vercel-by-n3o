@@ -8,7 +8,7 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 
-export const Input = ({ error, label, touched, onChange, mask: pattern, ...props }) => {
+export const Input = ({ error, label, touched, onChange, onError, mask: pattern, ...props }) => {
 
   const handleChange = event => {
     const unmaskedValue = unMask(event.target.value)

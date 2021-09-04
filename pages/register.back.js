@@ -7,9 +7,10 @@ import { useFormik } from "formik";
 
 import * as yup from "yup";
 
-import appRoutes from "../config/routes";
+import appRoutes from "../config/routes"
 
 import {
+  Container,
   Box,
   Input,
   Button,
@@ -20,14 +21,9 @@ import {
   InputLeftAddon,
   InputGroup,
   Divider,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalCloseButton,
-  ModalBody,
 } from "@chakra-ui/react";
 
-import { useAuth } from "../modules/providers";
+import { useAuth, usernameExists } from "../modules/providers";
 
 import { LoginHeader } from "../modules/components";
 import { CentererBox, LoginApp } from "../modules/wrappers";
@@ -37,67 +33,34 @@ const validationSchema = yup.object().shape({
     .string()
     .email("Email inválido")
     .required("Preenchimento obrigatório"),
-  password: yup
-    .string()
-    .matches(/.*[^ ].*/, "Palavra-passe não pode conter só espaços")
-    .matches(/^\S+$/, "Palavra-passe não pode conter espaços")
-    .required("Preenchimento obrigatório"),
+  password: yup.string().required("Preenchimento obrigatório"),
   username: yup
-    .string()
-    .lowercase()
-    .required("Preenchimento obrigatório")
-    .matches(/.*[^ ].*/, "Nome de usuário não pode conter só espaços")
-    .matches(/^\S+$/, "Nome de usuário não pode conter espaços")
-    .test(
-      "username equals route",
-      "Nome de usuário proibido, tente outro.",
-      function (value) {
-        if (!appRoutes.find((route) => route === value)) {
-          return true;
+  .string()
+  .lowercase()
+  .required("Preenchimento obrigatório")
+  .test("username equals route", "Nome de usuário proibido, tente outro.", 
+    function(value) {
+        if(!appRoutes.find(route => route === value)){
+          return true
         }
-        return false;
-      }
-    ),
+        return false
+    })
 });
-
-const ModalErrorPopup = ({ isOpen, onClose, children }) => {
-  return (
-    <Modal size="sm" isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent height="auto" padding={4}>
-        <ModalCloseButton />
-        <Box display="flex" alignItems="center" textAlign="center" marginY={4}>
-        <ModalBody>{children}
-        </ModalBody>
-        </Box>
-      </ModalContent>
-    </Modal>
-  );
-};
 
 export default function Register() {
   const router = useRouter();
 
-  const [auth, { usernameExists, signup }] = useAuth();
-
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen((prevState) => !prevState);
-
-  const [signError, setSignError] = useState();
-
-  const displayError = (error) => {
-    setSignError(error);
-    toggle();
-  }
+  const [auth, { signup }] = useAuth();
 
   useEffect(() => {
+    console.log("useEffect signup : " + auth.user.value);
     auth.user && router.push("/agenda");
   }, [auth.user]);
 
-  console.log("rendering..");
+  console.log("rendering..")
 
   const signSubmit = async ({ email, password, username }) => {
-    signup({ email, password, username });
+      signup({ email, password, username })
   };
 
   const {
@@ -109,45 +72,21 @@ export default function Register() {
     handleSubmit,
     isSubmitting,
   } = useFormik({
-    onSubmit: async (values) => {
-      const userExists = await usernameExists(values.username);
-      console.log("user exists ? ", userExists);
-
-      if (userExists) {
-        displayError("Este nome de usuário já existe.");
-      } else{
-
-      await signup(values).then(result => {
-        if(result.error && result.error.code === "auth/email-already-in-use"){
-          displayError("Este email já se encontra registado.")
-        }
-          console.log(result)
-      })
-    }
-    },
+    onSubmit: async (values) => signSubmit(values),
     validationSchema,
     initialValues: {
       email: "",
       username: "",
-      password: "",
+      password: ""
     },
   });
 
   return (
     <CentererBox>
-      <ModalErrorPopup isOpen={isOpen} onClose={toggle}>
-        {signError}
-      </ModalErrorPopup>
       <LoginApp>
         <LoginHeader />
 
-        <Box
-          marginTop={2}
-          padding={4}
-          width="100%"
-          borderWidth="1px"
-          borderRadius="lg"
-        >
+        <Box marginTop={2} padding={4} width="100%" borderWidth="1px" borderRadius="lg">
           <FormControl id="email" isRequired>
             <Box display="flex">
               <FormLabel>Email</FormLabel>{" "}
@@ -207,12 +146,7 @@ export default function Register() {
             </InputGroup>
           </FormControl>
 
-          <Box
-            marginTop="3"
-            fontSize="14px"
-            display="flex"
-            justifyContent="center"
-          >
+          <Box marginTop="3" fontSize="14px" display="flex" justifyContent="center">
             <Box display="flex">
               <Text>Já tem uma conta ?&nbsp;</Text>
               <Link display="flex" href="/login">

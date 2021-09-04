@@ -26,10 +26,10 @@ export default async (req, res) => {
   try {
     const { uid } = await firebaseServer.auth().verifyIdToken(token);
 
+    console.log(uid)
+
     const snapshot = await agenda.where('userId', '==' , uid).
     where('date', '==', req.query.date).get();
-
-    
 
     const docs = snapshot.docs.map(doc => doc.data())
 
@@ -39,11 +39,6 @@ export default async (req, res) => {
       time,
       isScheduled: !!docs.find(doc => doc.time === time)
     }))
-
-    //const result = allTImeBlocks.map((time) => {
-    //  const docForTime = docs.find(doc => doc.time === time)
-    //  console.log(docForTime);
-    //})
 
     return res.status(200).json(result);
   } catch (error) {
