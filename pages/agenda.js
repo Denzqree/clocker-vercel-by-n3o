@@ -17,7 +17,7 @@ import { formatDate } from "../modules/components"
 
 import { useAuth } from "../modules/providers"
 
-import { MainApp } from "../modules/wrappers"
+import { MainApp, CentererBox } from "../modules/wrappers"
 
 import { MainHeader } from "../modules/components"
 
@@ -26,7 +26,7 @@ const getAgenda = async (when) => {
   if(!token){
     return
   }
-  await axios({
+  return await axios({
     method: "get",
     url: "/api/agenda",
     params: {
@@ -45,7 +45,6 @@ export default function Agenda() {
   const [data, { loading, status, error }, fetch] = useFetch(getAgenda, { lazy: true })
 
   const removeDay = () => setWhen(prevState => subDays(when, 1))
-
   const addDay = () =>  setWhen(prevState => addDays(when, 1))
 
   useEffect(() => {
@@ -56,14 +55,24 @@ export default function Agenda() {
       fetch(when)
   },[when])
 
-  const AgendaBlock = (time, name, phone) => (
-    <Box display="flex">
-      <Box flex={1}>{time}</Box>
-      <Box><Text size="xl">{name}</Text>
+  const AgendaBlock = ({isScheduled, time, name, phone}) => {
+    if(isScheduled){
+    return (
+    <Box display="flex" width="100%" marginTop={4} padding={4} backgroundColor="#f7f7f7" borderWidth="1px" borderRadius="lg" minHeight="100px" alignItems="center">
+      <Box flex={1} textColor="#4E84D4">{time}</Box>
+      <Box><Text size="xl" fontWeight="bold">{name}</Text>
       <Text size="sm">{phone}</Text>
       </Box>
     </Box>
-  )
+    )
+  } else {
+    return (
+      <Box display="flex" width="100%"  marginTop={4} padding={4} borderWidth="1px" borderColor="#4E84D4" textColor="#4E84D4" borderRadius="lg" alignItems="center" minHeight="100px" textAlign="center">
+        <Box flex={1}>{time} - LIVRE</Box>
+      </Box>
+      )
+    }
+  }
 
   return (
     auth.user && (
@@ -103,15 +112,20 @@ export default function Agenda() {
                 </Box>
               </Box>
             </Box>
-            <Box
+            <Box display="flex"
+            flexDirection="column"
               marginTop={2}
               padding={4}
               width="100%"
               borderWidth="1px"
               borderRadius="lg"
+              alignItems="center"
+              justifyContent="center"
             >
-              {console.log("is agenda loading... ",loading)}
-              {loading && (
+              {//console.log("is agenda loading... ",loading)
+              }
+              { loading && (
+                <>
                 <Spinner
                   thickness="4px"
                   speed="0.65s"
@@ -119,14 +133,35 @@ export default function Agenda() {
                   color="blue.500"
                   size="xl"
                 />
+                <Text>Carregando sua agenda ...</Text>
+                </>
               )}
-              {console.log(data)}
-              {
-              data?.map(doc => (
-                <AgendaBlock key={doc.time} time={doc.time} name={doc.name} phone={doc.phone} />
-              ))
-              }
+            {
+              data?.map((doc) => {
+                if(doc.isScheduled){
+                  return (
+                        <AgendaBlock isScheduled={doc.isScheduled} key={doc.time} time={doc.time} name={doc.name} phone={doc.phone} />
+                  )
+                }else{
+                  return (
+                    <AgendaBlock isScheduled={doc.isScheduled} key={doc.time} time={doc.time} />
+              )
+                }
+              })
+            }
             </Box>
+            <Box
+              textAlign="center"
+              alignItems="center"
+              backgroundColor="#f7f7f7"
+              marginY={2}
+              padding={4}
+              width="100%"
+              borderWidth="1px"
+              borderRadius="lg"
+              height="auto">
+                  <Text marginBottom={2} fontWeight="bold">Endereço da sua agenda</Text>{auth.user && (<Link href={window.location.origin+'/'+auth.user.email.split("@")[0]}>{window.location.origin+'/'+auth.user.email.split("@")[0]}</Link>)}
+              </Box>
           </Box>
         </MainApp>
       </Box>
@@ -134,3 +169,8 @@ export default function Agenda() {
   )
   
 }
+{/* 
+return (
+                <AgendaBlock key={time} time={time} name={name} phone={phone} />
+                )}
+                 */}

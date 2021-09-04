@@ -12,7 +12,6 @@ const endAt = new Date(2021, 1, 1, 17, 0)
 const totalHours = differenceInHours(endAt, startAt)
 
 const allTimeBlocks = []
-const lockedTimeBlocks = []
 
 for(let blockIndex = 0; blockIndex <= totalHours; blockIndex++){
   const time = format(addHours(startAt, blockIndex), 'HH:mm')
@@ -49,9 +48,7 @@ const getSchedule = async (req, res) => {
       .where("date", "==", req.query.date)
       .get();
 
-    const docs = []
-
-    snapshot.forEach(doc => docs.push(doc.data()))
+    const docs = snapshot.docs.map(doc => doc.data())
 
     const result = allTimeBlocks.map((time) => ({
       time,
