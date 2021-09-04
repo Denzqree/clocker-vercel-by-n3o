@@ -83,11 +83,18 @@ export default function Login() {
   } = useFormik({
     onSubmit: async (values) => {
       await login(values).then(result => {
+        console.log(result.error.code)
         if(result.error){
         switch(result.error.code){
-          case "auth/user-not-found" : displayError("Esse utilizador não foi encontrado.")
-          case "auth/wrong-password" : displayError("A palavra-passe está errada.")
-          case "auth/too-many-requests" : displayError("Você já tentou demasiadas vezes, espere um pouco e volte a tentar.")
+          case "auth/user-not-found" :
+              displayError("Esse utilizador não foi encontrado.")
+              break;
+          case "auth/wrong-password" : 
+              displayError("A palavra-passe está errada.")
+              break;
+          case "auth/too-many-requests" : 
+              displayError("Você já tentou demasiadas vezes, espere um pouco e volte a tentar.")
+              break;
         }
       }
       })
