@@ -96,9 +96,6 @@ export default function Register() {
 
   console.log("rendering..");
 
-  const signSubmit = async ({ email, password, username }) => {
-    signup({ email, password, username });
-  };
 
   const {
     values,
