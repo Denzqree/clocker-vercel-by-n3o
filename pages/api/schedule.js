@@ -33,10 +33,7 @@ const getUserId = async (username) => {
 
 const getSchedule = async (req, res) => {
   try{
-    console.log("getschedule username: ",req.query.username)
     const userIdFetch = await getUserId(req.query.username)
-
-    console.log(userIdFetch);
 
     if(!userIdFetch){
       return res.status(404).json({message:"Invalid username"})
@@ -68,7 +65,6 @@ const setSchedule = async (req, res) => {
   const doc = await agenda.doc(docId).get()
 
   if(doc.exists) {
-    console.log("sending status 400 cause agenda entry detected")
     return res.status(400).json({message:"Time blocked !"})
   }
 
