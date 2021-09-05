@@ -107,7 +107,7 @@ export default function Register() {
     isSubmitting,
   } = useFormik({
     onSubmit: async (values) => {
-      await usernameExists(values.username).then(result => {
+      await usernameExists(values.username).then(async (result) => {
         console.log(result)
         if (result) {
           displayError("Este nome de usuário já existe.");
