@@ -9,11 +9,12 @@ const profiles = db.collection("profiles");
 const getProfile = (req, res) => {
   try{
     const doc = profiles.doc(req.query.username)
+    if(!doc){
+      res.status(204).json(false);
+    }
     doc.get().then((doc) => {
       if (doc.exists) {
       res.status(200).json({username:doc.data().username});
-      } else {
-        res.status(204).json(false);
       }
     })
   }catch(error){
