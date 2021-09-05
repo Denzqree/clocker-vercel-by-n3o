@@ -18,14 +18,17 @@ import { MainApp } from "../modules/wrappers";
 import { formatDate, MainHeader, TimeBlock } from "../modules/components";
 
 const getSchedule = async (when, username) => {
+  if(!username){
+      return
+  }
   return await axios({
-    method: "get",
-    url: "/api/schedule",
-    params: {
-      date: format(when, "yyyy-MM-dd"),
-      username,
-    }
-  })
+      method: "get",
+      url: "/api/schedule",
+      params: {
+        date: format(when, "yyyy-MM-dd"),
+        username,
+      }
+    })
 }
 
 export default function Schedule() {
@@ -106,8 +109,10 @@ export default function Schedule() {
                   size="xl"
                 />
               )}
-              
-              {data?.map(({ time, isBlocked }) => (
+              {data?.error && (
+                data.error
+              )}
+              {data?.result?.map(({ time, isBlocked }) => (
                 <TimeBlock key={time} date={when} time={time} disabled={isBlocked} onSuccess={refresh} />
               ))}
             </SimpleGrid>

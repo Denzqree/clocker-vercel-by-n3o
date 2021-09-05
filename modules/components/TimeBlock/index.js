@@ -19,6 +19,7 @@ import {
 
 import { Input } from "../Input";
 import { format } from "date-fns";
+import router from "next/router";
 
 const setSchedule = async ({ date, time, ...values }) =>
   axios({
@@ -28,7 +29,7 @@ const setSchedule = async ({ date, time, ...values }) =>
       ...values,
       date: format(date, "yyyy-MM-dd"),
       time,
-      username: window.location.pathname.replace("/", ""),
+      username: router.query.username,
     },
   });
 
@@ -82,12 +83,13 @@ export const TimeBlock = ({ time, date, disabled, onSuccess }) => {
       try {
         await setSchedule({
           ...values,
-          date,
           time,
+          date
         });
         toggle();
         onSuccess()
-      } catch (error) {}
+      } catch (error) {
+      console.log("error setting schedule : ", error)}
     },
     initialValues: {
       name: "",
@@ -140,7 +142,7 @@ export const TimeBlock = ({ time, date, disabled, onSuccess }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               size="lg"
-              disabled={isSubmitting}s
+              disabled={isSubmitting}
               mask={['(99) 999 999 999','(999) 9 9999-9999']}
             />
           </>

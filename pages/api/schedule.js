@@ -36,9 +36,9 @@ const getSchedule = async (req, res) => {
     const userIdFetch = await getUserId(req.query.username)
 
     if(!userIdFetch){
-      return res.status(404).json({message:"Invalid username"})
+      res.status(200).json({error:"Nome de usuário invalido !"})
     }
-    
+
     const snapshot = await agenda
       .where("userId", "==", userIdFetch)
       .where("date", "==", req.query.date)
@@ -51,9 +51,9 @@ const getSchedule = async (req, res) => {
       isBlocked: !!docs.find(doc => doc.time === time)
     }))
 
-    return res.status(200).json(result) 
+    res.status(200).json({result}) 
   }catch(error){ // --- res.status = not this (delete this upon fix) 
-    return res.status(404)
+    res.status(200).json({error:"Foi impossível recuperar a agenda..."})
   } // --- res.status = not this (delete this upon fix)
 
 }
@@ -65,7 +65,7 @@ const setSchedule = async (req, res) => {
   const doc = await agenda.doc(docId).get()
 
   if(doc.exists) {
-    return res.status(400).json({message:"Time blocked !"})
+    return res.status(200).json({message:"Time blocked !"})
   }
 
   const block = await agenda.doc(docId).set({
