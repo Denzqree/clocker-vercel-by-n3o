@@ -16,6 +16,7 @@ const allTimeBlocks = []
 for(let blockIndex = 0; blockIndex <= totalHours; blockIndex++){
   const time = format(addHours(startAt, blockIndex), 'HH:mm')
   allTimeBlocks.push(time);
+  
 }
 
 const getUserId = async (username) => {

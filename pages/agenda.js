@@ -13,13 +13,11 @@ import { addDays, subDays, format } from "date-fns"
 
 import { getToken } from "../config/firebase/client"
 
-import { formatDate } from "../modules/components"
+import { formatDate, MainHeader } from "../modules/components"
 
 import { useAuth } from "../modules/providers"
 
 import { MainApp, CentererBox } from "../modules/wrappers"
-
-import { MainHeader } from "../modules/components"
 
 const getAgenda = async (when) => {
   const token = await getToken()
@@ -40,20 +38,26 @@ const getAgenda = async (when) => {
 
 export default function Agenda() {
   const router = useRouter();
-  const [auth, { logout }] = useAuth();
+  
+  const [auth, { logout, getUsername }] = useAuth();
+  const [username, setUsername] = useState()
   const [when, setWhen] = useState(() => new Date());
   const [data, { loading, status, error }, fetch] = useFetch(getAgenda, { lazy: true })
 
   const removeDay = () => setWhen(prevState => subDays(when, 1))
   const addDay = () =>  setWhen(prevState => addDays(when, 1))
 
-  useEffect(() => {
+  useEffect(async () => {
     !auth.user && router.push("/");
   }, [auth.user])
 
   useEffect(() => {
       fetch(when)
   },[when])
+
+  useEffect(async () => {
+    setUsername(await getUsername());
+  },[])
 
   const AgendaBlock = ({isScheduled, time, name, phone}) => {
     if(isScheduled){
@@ -122,8 +126,6 @@ export default function Agenda() {
               alignItems="center"
               justifyContent="center"
             >
-              {//console.log("is agenda loading... ",loading)
-              }
               { loading && (
                 <>
                 <Spinner
@@ -160,7 +162,7 @@ export default function Agenda() {
               borderWidth="1px"
               borderRadius="lg"
               height="auto">
-                  <Text marginBottom={2} fontWeight="bold">Endereço da sua agenda</Text>{auth.user && (<Link href={window.location.origin+'/'+auth.user.email.split("@")[0]}>{window.location.origin+'/'+auth.user.email.split("@")[0]}</Link>)}
+                  <Text marginBottom={2} fontWeight="bold">Endereço da sua agenda</Text>{auth.user && (<Link href={window.location.origin+'/'+username}>{window.location.origin+'/'+username}</Link>)}
               </Box>
           </Box>
         </MainApp>

@@ -67,8 +67,6 @@ export default function Login() {
   }
 
   useEffect(() => {
-    console.log("useEffect login : ");
-    console.log(auth);
     auth.user && router.push("/agenda");
   }, [auth.user]);
 
@@ -83,7 +81,6 @@ export default function Login() {
   } = useFormik({
     onSubmit: async (values) => {
       await login(values).then(result => {
-        console.log(result.error.code)
         if(result.error){
         switch(result.error.code){
           case "auth/user-not-found" :

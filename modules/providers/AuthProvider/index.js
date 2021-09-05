@@ -3,7 +3,7 @@ import * as React from "react";
 import { useEffect, useState, useContext } from "react";
 
 import firebaseClient, {
-  persistenceMode,
+  persistenceMode, getToken,
 } from "./../../../config/firebase/client/";
 
 const AuthContext = React.createContext([{}, () => {}]);
@@ -21,8 +21,19 @@ export const login = async ({ email, password }) => {
 
 export const logout = () => {
   firebaseClient.auth().signOut();
-  console.log("signed out...");
 };
+
+export const getUsername = async () => {
+    const token = await getToken()
+    const result = await axios({
+      method:"get",
+      url: "/api/profile",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return result.data
+  }
 
 export const usernameExists = async (username) => {
   try{
@@ -62,25 +73,21 @@ export const signup = async ({ email, password, username }) => {
 
 export const useAuth = () => {
   const [auth] = useContext(AuthContext);
-  return [auth, { login, logout, signup, usernameExists }];
+  return [auth, { login, logout, signup, usernameExists, getUsername }];
 };
 
 const onAuth = (auth, setAuth) => {
   const unsubscribe = firebaseClient.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log("firebase detected user logged");
-      console.log(auth);
       setAuth({
         loading: false,
         user: user,
       });
     } else {
-      console.log("firebase detected user logged out");
       setAuth({
         loading: false,
         user: false,
       });
-      console.log(auth);
     }
     return () => unsubscribe();
   });

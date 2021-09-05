@@ -48,6 +48,7 @@ const validationSchema = yup.object().shape({
     .required("Preenchimento obrigatório")
     .matches(/.*[^ ].*/, "Nome de usuário não pode conter só espaços")
     .matches(/^\S+$/, "Nome de usuário não pode conter espaços")
+    .matches(/^[a-z0-9]+$/i, "Nome de usuário não pode conter caracteres especiais")
     .test(
       "username equals route",
       "Nome de usuário proibido, tente outro.",
@@ -94,8 +95,6 @@ export default function Register() {
     auth.user && router.push("/agenda");
   }, [auth.user]);
 
-  console.log("rendering..");
-
 
   const {
     values,
@@ -108,7 +107,6 @@ export default function Register() {
   } = useFormik({
     onSubmit: async (values) => {
       await usernameExists(values.username).then(async (result) => {
-        console.log("result : ",result)
         if(result.data.username) {
           displayError("Este nome de usuário já se encontra registado.")
         }else {

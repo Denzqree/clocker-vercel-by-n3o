@@ -26,8 +26,6 @@ export default async (req, res) => {
   try {
     const { uid } = await firebaseServer.auth().verifyIdToken(token);
 
-    console.log(uid)
-
     const snapshot = await agenda.where('userId', '==' , uid).
     where('date', '==', req.query.date).get();
 
@@ -42,7 +40,6 @@ export default async (req, res) => {
 
     return res.status(200).json(result);
   } catch (error) {
-    console.log("FIREBASE ERROR IN AGENDA:", error);
     return res.status(401);
   }
 };
