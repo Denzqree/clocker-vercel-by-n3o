@@ -7,15 +7,15 @@ const db = firebaseServer.firestore();
 const profiles = db.collection("profiles");
 
 const getProfile = (req, res) => {
+  //204 no content
   try{
     const doc = profiles.doc(req.query.username)
-    if(!doc){
-      res.status(204).json(false);
-    }
+
     doc.get().then((doc) => {
-      if (doc.exists) {
-      res.status(200).json({username:doc.data().username});
-      }
+      const username = doc.data()?.username 
+      console.log(username)
+      !username && res.status(200).json({username:false})
+      username && res.status(200).json({username:doc.data().username});
     })
   }catch(error){
     res.status(500).json({error})
@@ -26,17 +26,16 @@ const setProfile = async (req, res) => {
  try{
   const [, token] = req.headers.authorization.split(" ");
   const { uid } = await firebaseServer.auth().verifyIdToken(token);
-  
   const doc = profiles.doc(req.query.username)
     doc.get().then((doc) => {
       if (doc.exists) {
-        res.status(409).json({error : "User already exists"});
+        res.status(409).json({error: "User already exists"});
       } else {
         profiles.doc(req.query.username).set({
           userId: uid,
           username: req.query.username,
         });
-        res.status(200).json({ message: "User signed up succesfully" });
+        res.status(200).json({message: "User signed up succesfully" });
       }
     })
   } catch(error){

@@ -33,7 +33,7 @@ export const usernameExists = async (username) => {
       username,
     },
   })
-  return usernameExists.data
+  return usernameExists
 } catch(error){
   return {error:{code:error}}
 }

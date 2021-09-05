@@ -108,22 +108,21 @@ export default function Register() {
   } = useFormik({
     onSubmit: async (values) => {
       await usernameExists(values.username).then(async (result) => {
-        if(result.username) {
+        console.log("result : ",result)
+        if(result.data.username) {
           displayError("Este nome de usuário já se encontra registado.")
-        }else if(result.error){
-        }else{
-          await signup(values).then(result => {
-            console.log(result)
-            if(result.error){
-            switch(result.error.code){
-              case "auth/email-already-in-use" :
-                displayError("Este email já se encontra registado.")
-                break
-              case "auth/weak-password" :
-                displayError("Esta palavra-passe é fraca.")
-                break
+        }else {
+        await signup(values).then(result => {
+            if(result.data.error){
+              switch(result.data.error.code){
+                case "auth/email-already-in-use" :
+                  displayError("Este email já se encontra registado.")
+                  break
+                case "auth/weak-password" :
+                  displayError("Esta palavra-passe é fraca.")
+                  break
+              }
             }
-          }
           })
         }
       });

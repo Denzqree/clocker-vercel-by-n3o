@@ -35,7 +35,7 @@ export default function Schedule() {
   const [when, setWhen] = useState(() => new Date());
   const [data, { loading, status, error }, fetch] = useFetch(getSchedule, {
     lazy: true,
-  });
+  })
 
   const removeDay = () => setWhen((prevState) => subDays(when, 1));
   const addDay = () => setWhen((prevState) => addDays(when, 1));
@@ -46,7 +46,6 @@ export default function Schedule() {
     refresh()
   }, [when, router.query.username]);
 
-  
 
   return (
     <Box>
