@@ -33,9 +33,9 @@ export const usernameExists = async (username) => {
       username,
     },
   })
-  return !!usernameExists.data
+  return usernameExists.data
 } catch(error){
-  return {error}
+  return {error:{code:error}}
 }
 };
 

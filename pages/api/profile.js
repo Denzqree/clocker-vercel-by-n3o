@@ -11,7 +11,7 @@ const getProfile = async (req, res) => {
     const doc = profiles.doc(req.query.username)
     doc.get().then((doc) => {
       if (doc.exists) {
-      res.status(200).json(doc.data().username);
+      res.status(200).json({username:doc.data().username});
       } else {
         res.status(204).json(false);
       }
