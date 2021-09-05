@@ -34,8 +34,9 @@ export const usernameExists = async (username) => {
     },
   })
   return !!usernameExists.data
-} catch(error)
-return {error}
+} catch(error){
+  return {error}
+}
 };
 
 export const signup = async ({ email, password, username }) => {
