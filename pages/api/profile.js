@@ -6,7 +6,7 @@ const db = firebaseServer.firestore();
 
 const profiles = db.collection("profiles");
 
-const getProfile = async (req, res) => {
+const getProfile = (req, res) => {
   try{
     const doc = profiles.doc(req.query.username)
     doc.get().then((doc) => {

@@ -110,8 +110,6 @@ export default function Register() {
       await usernameExists(values.username).then(async (result) => {
         if(result.username) {
           displayError("Este nome de usuário já se encontra registado.")
-          /* 
-          } */
         }else if(result.error){
         }else{
           await signup(values).then(result => {
@@ -126,9 +124,6 @@ export default function Register() {
                 break
             }
           }
-            if(result.error && result.error.code === "auth/email-already-in-use"){
-              
-            }
           })
         }
       });
