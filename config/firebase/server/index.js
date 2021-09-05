@@ -11,7 +11,7 @@ const app = firebaseServer.apps.length
                     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
                     project_id: process.env.FIREBASE_SERVER_PROJECT_ID, 
                     private_key_id: process.env.FIREBASE_SERVER_PRIVATE_KEY_ID, 
-                    private_key: process.env.FIREBASE_SERVER_PRIVATE_KEY,
+                    private_key: process.env.FIREBASE_SERVER_PRIVATE_KEY.replace(/\\b/g, '\n'),
                     client_email: process.env.FIREBASE_SERVER_CLIENT_EMAIL,
                     client_id: process.env.FIREBASE_SERVER_CLIENT_ID,
                     client_cert: process.env.FIREBASE_SERVER_CLIENT_CERT
