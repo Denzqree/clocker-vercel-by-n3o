@@ -7,6 +7,7 @@ const db = firebaseServer.firestore();
 const profiles = db.collection("profiles");
 
 const getProfile = async (req, res) => {
+  try{
     const doc = profiles.doc(req.query.username)
     doc.get().then((doc) => {
       if (doc.exists) {
@@ -15,6 +16,9 @@ const getProfile = async (req, res) => {
         res.status(204).json(false);
       }
     })
+  }catch(error){
+    res.status(500).json({error})
+  }
 }
 
 const setProfile = async (req, res) => {
