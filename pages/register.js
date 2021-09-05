@@ -107,20 +107,21 @@ export default function Register() {
     isSubmitting,
   } = useFormik({
     onSubmit: async (values) => {
-      const userExists = await usernameExists(values.username);
-      console.log("user exists ? ", userExists);
-
-      if (userExists) {
-        displayError("Este nome de usuário já existe.");
-      } else{
-
-      await signup(values).then(result => {
-        if(result.error && result.error.code === "auth/email-already-in-use"){
-          displayError("Este email já se encontra registado.")
+      await usernameExists(values.username).then(result => {
+        console.log(result)
+        if (result) {
+          displayError("Este nome de usuário já existe.");
+        }else{
+          await signup(values).then(result => {
+            if(result.error && result.error.code === "auth/email-already-in-use"){
+              displayError("Este email já se encontra registado.")
+            }
+              console.log(result)
+          })
         }
-          console.log(result)
-      })
-    }
+      });
+
+
     },
     validationSchema,
     initialValues: {

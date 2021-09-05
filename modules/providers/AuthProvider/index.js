@@ -25,6 +25,7 @@ export const logout = () => {
 };
 
 export const usernameExists = async (username) => {
+  try{
   const usernameExists = await axios({
     method: "get",
     url: "/api/profile",
@@ -33,6 +34,8 @@ export const usernameExists = async (username) => {
     },
   })
   return !!usernameExists.data
+} catch(error)
+return {error}
 };
 
 export const signup = async ({ email, password, username }) => {
