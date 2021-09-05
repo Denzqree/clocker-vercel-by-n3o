@@ -111,8 +111,8 @@ export default function Register() {
           displayError("Este nome de usuário já se encontra registado.")
         }else {
         await signup(values).then(result => {
-            if(result.data.error){
-              switch(result.data.error.code){
+            if(result.error){
+              switch(result.error.code){
                 case "auth/email-already-in-use" :
                   displayError("Este email já se encontra registado.")
                   break
